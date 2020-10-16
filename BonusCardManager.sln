@@ -3,13 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30011.22
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BonusCard.WebAPI", "BonusCard.WebAPI\BonusCard.WebAPI.csproj", "{A19225CE-9CE7-451A-96DC-29D4A0927094}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BonusCardManager.WebAPI", "BonusCard.WebAPI\BonusCardManager.WebAPI.csproj", "{A19225CE-9CE7-451A-96DC-29D4A0927094}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BonusCard.DataAccess", "BonusCard.DataAccess\BonusCard.DataAccess.csproj", "{0570C5F7-A0B8-4951-8ECE-85F2F48B0535}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BonusCardManager.DataAccess", "BonusCard.DataAccess\BonusCardManager.DataAccess.csproj", "{0570C5F7-A0B8-4951-8ECE-85F2F48B0535}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BonusCard.ApplicationServices", "BonusCard.ApplicationServices\BonusCard.ApplicationServices.csproj", "{EAC3DCBF-4F53-4AFC-BF77-3A2583F1F883}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BonusCardManager.ApplicationServices", "BonusCard.ApplicationServices\BonusCardManager.ApplicationServices.csproj", "{EAC3DCBF-4F53-4AFC-BF77-3A2583F1F883}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BonusCard.ApplicationServicesTests", "BonusCard.ApplicationServicesTests\BonusCard.ApplicationServicesTests.csproj", "{A02E2FDC-C457-4F7E-9CCF-F79D9ED3E21C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BonusCardManager.ApplicationServicesTests", "BonusCard.ApplicationServicesTests\BonusCardManager.ApplicationServicesTests.csproj", "{A02E2FDC-C457-4F7E-9CCF-F79D9ED3E21C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
