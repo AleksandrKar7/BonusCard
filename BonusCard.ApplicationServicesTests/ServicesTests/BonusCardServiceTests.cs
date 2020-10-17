@@ -47,10 +47,12 @@ namespace BonusCardManager.ApplicationServicesTests.ServicesTests
 
         #endregion
 
-        #region Create
+        #region CreateBonusCard tests 
+
+        #region Positive cases
 
         [Fact]
-        public void Create_CorrectBonusCard_ShouldBeNotNull()
+        public void CreateBonusCard_CorrectBonusCard_ShouldBeNotNull()
         {
             //Arrange
             var bonusCard = new BonusCard
@@ -61,7 +63,7 @@ namespace BonusCardManager.ApplicationServicesTests.ServicesTests
             };
 
             //Act
-            bonusCardService.Create(bonusCard);
+            bonusCardService.CreateBonusCard(bonusCard);
             var actual = fakeBonusCards.Last();
 
             //Assert
@@ -69,7 +71,7 @@ namespace BonusCardManager.ApplicationServicesTests.ServicesTests
         }
 
         [Fact]
-        public void Create_CorrectBonusCard_EqualIds()
+        public void CreateBonusCard_CorrectBonusCard_EqualIds()
         {
             //Arrange
             var bonusCard = new BonusCard
@@ -80,15 +82,19 @@ namespace BonusCardManager.ApplicationServicesTests.ServicesTests
             };
 
             //Act
-            bonusCardService.Create(bonusCard);
+            bonusCardService.CreateBonusCard(bonusCard);
             var actual = fakeBonusCards.Last();
 
             //Assert
             Assert.Equal(bonusCard.Id, actual.Id);
         }
 
+        #endregion Positive cases
+
+        #region Negative cases
+
         [Fact]
-        public void Create_IncorrectExpirationDate_ArgumentException()
+        public void CreateBonusCard_IncorrectExpirationDate_ArgumentException()
         {
             //Arrange
             var bonusCard = new BonusCard
@@ -101,11 +107,11 @@ namespace BonusCardManager.ApplicationServicesTests.ServicesTests
             //Act
             
             //Assert
-            Assert.Throws<ArgumentException>(() => bonusCardService.Create(bonusCard));
+            Assert.Throws<ArgumentException>(() => bonusCardService.CreateBonusCard(bonusCard));
         }
 
         [Fact]
-        public void Create_IncorrectExpirationDate_CorrectExceptionMessage()
+        public void CreateBonusCard_IncorrectExpirationDate_CorrectExceptionMessage()
         {
             //Arrange
             var bonusCard = new BonusCard
@@ -117,14 +123,14 @@ namespace BonusCardManager.ApplicationServicesTests.ServicesTests
             var expected = "Expiration date cannot be less than the current date";
 
             //Act
-            var actual = Record.Exception(() => bonusCardService.Create(bonusCard)).Message.Trim();
+            var actual = Record.Exception(() => bonusCardService.CreateBonusCard(bonusCard)).Message.Trim();
 
             //Assert
             Assert.Equal(expected, actual);
         }
 
         [Fact]
-        public void Create_NegativeBalance_ArgumentException()
+        public void CreateBonusCard_NegativeBalance_ArgumentException()
         {
             //Arrange
             var bonusCard = new BonusCard
@@ -137,11 +143,11 @@ namespace BonusCardManager.ApplicationServicesTests.ServicesTests
             //Act
 
             //Assert
-            Assert.Throws<ArgumentException>(() => bonusCardService.Create(bonusCard));
+            Assert.Throws<ArgumentException>(() => bonusCardService.CreateBonusCard(bonusCard));
         }
 
         [Fact]
-        public void Create_NegativeBalance_CorrectExceptionMessage()
+        public void CreateBonusCard_NegativeBalance_CorrectExceptionMessage()
         {
             //Arrange
             var bonusCard = new BonusCard
@@ -153,12 +159,14 @@ namespace BonusCardManager.ApplicationServicesTests.ServicesTests
             var expected = "Balance cannot be less than zero";
 
             //Act
-            var actual = Record.Exception(() => bonusCardService.Create(bonusCard)).Message.Trim();
+            var actual = Record.Exception(() => bonusCardService.CreateBonusCard(bonusCard)).Message.Trim();
 
             //Assert
             Assert.Equal(expected, actual);
         }
 
-        #endregion
+        #endregion Negative cases
+
+        #endregion CreateBonusCard tests 
     }
 }

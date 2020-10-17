@@ -24,7 +24,7 @@ namespace BonusCardManager.ApplicationServices.Services
             throw new NotImplementedException();
         }
 
-        public void Create(BonusCard bonusCard)
+        public void CreateBonusCard(BonusCard bonusCard)
         {
             string errors = validator.Validate(bonusCard);
             if (!String.IsNullOrWhiteSpace(errors))
@@ -40,11 +40,6 @@ namespace BonusCardManager.ApplicationServices.Services
             unitOfWork.BonusCards.Create(bonusCard);
 
             unitOfWork.Save();
-        }
-
-        public void CreateBonusCard(BonusCard bonusCard)
-        {
-            throw new NotImplementedException();
         }
 
         public BonusCard GetBonusCard(int cardNumber)
