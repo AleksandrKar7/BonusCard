@@ -1,4 +1,5 @@
-﻿using BonusCardManager.ApplicationServices.Services.Interfaces;
+﻿using BonusCardManager.ApplicationServices.DTOs;
+using BonusCardManager.ApplicationServices.Services.Interfaces;
 using BonusCardManager.ApplicationServices.Validation;
 using BonusCardManager.ApplicationServices.Validation.Interfaces;
 using BonusCardManager.DataAccess.Entities;
@@ -11,12 +12,16 @@ namespace BonusCardManager.ApplicationServices.Services
     public class BonusCardService : IBonusCardService
     {
         private readonly IUnitOfWork unitOfWork;
-        private readonly IValidator<BonusCard> validator;
+        private readonly IValidator<BonusCardDto> validator;
+        private readonly MapperService mapper;
+
 
         public BonusCardService(IUnitOfWork unitOfWork)
         {
             this.unitOfWork = unitOfWork;
+
             validator = new BonusCardValidator();
+            mapper = new MapperService();
         }
 
         public void AccrualBalance(int cardId, decimal price)
@@ -24,12 +29,20 @@ namespace BonusCardManager.ApplicationServices.Services
             throw new NotImplementedException();
         }
 
-        public void CreateBonusCard(BonusCard bonusCard)
+        public void CreateBonusCard(BonusCardDto bonusCardDto)
         {
-            string errors = validator.Validate(bonusCard);
+            var errors = validator.Validate(bonusCardDto);
             if (!String.IsNullOrWhiteSpace(errors))
             {
                 throw new ArgumentException(errors);
+            }
+
+            var bonusCard = mapper.Map<BonusCardDto, BonusCard>(bonusCardDto);
+
+            bonusCard.Customer = unitOfWork.Customers.Get(bonusCardDto.CustomerId);
+            if(bonusCard.Customer == null)
+            {
+                throw new ArgumentException("Customer not found");
             }
 
             bonusCard.Number = NumberRandomizer.GetUniqueNumber(
@@ -37,6 +50,7 @@ namespace BonusCardManager.ApplicationServices.Services
                                      .Select(x => x.Number)
                                      .AsEnumerable()
             );
+
             unitOfWork.BonusCards.Create(bonusCard);
 
             unitOfWork.Save();

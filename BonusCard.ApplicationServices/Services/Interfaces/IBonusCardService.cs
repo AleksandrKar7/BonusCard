@@ -1,4 +1,5 @@
-﻿using BonusCardManager.DataAccess.Entities;
+﻿using BonusCardManager.ApplicationServices.DTOs;
+using BonusCardManager.DataAccess.Entities;
 
 namespace BonusCardManager.ApplicationServices.Services.Interfaces
 {
@@ -7,7 +8,7 @@ namespace BonusCardManager.ApplicationServices.Services.Interfaces
         BonusCard GetBonusCard(string customerPhone);
         BonusCard GetBonusCard(int cardNumber);
         
-        void CreateBonusCard(BonusCard bonusCard);
+        void CreateBonusCard(BonusCardDto bonusCard);
 
         void WriteOffBalance(int cardId, decimal amount);
         void AccrualBalance(int cardId, decimal amount);

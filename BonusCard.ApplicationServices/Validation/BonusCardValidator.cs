@@ -1,13 +1,13 @@
-﻿using BonusCardManager.ApplicationServices.Validation.Interfaces;
-using BonusCardManager.DataAccess.Entities;
+﻿using BonusCardManager.ApplicationServices.DTOs;
+using BonusCardManager.ApplicationServices.Validation.Interfaces;
 using System;
 using System.Text;
 
 namespace BonusCardManager.ApplicationServices.Validation
 {
-    class BonusCardValidator : IValidator<BonusCard>
+    class BonusCardValidator : IValidator<BonusCardDto>
     {
-        public string Validate(BonusCard bonusCard)
+        public string Validate(BonusCardDto bonusCard)
         {
             StringBuilder errorMessageBuilder = new StringBuilder();
 
@@ -18,6 +18,10 @@ namespace BonusCardManager.ApplicationServices.Validation
             if (bonusCard.Balance < 0)
             {
                 errorMessageBuilder.AppendLine("Balance cannot be less than zero");
+            }
+            if (bonusCard.CustomerId <= 0)
+            {
+                errorMessageBuilder.AppendLine("CustomerId must be above zero");
             }
 
             return errorMessageBuilder.ToString();
