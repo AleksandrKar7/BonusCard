@@ -5,7 +5,7 @@ namespace BonusCardManager.ApplicationServices.Services.Interfaces
 {
     public interface IBonusCardService
     {
-        BonusCard GetBonusCard(string customerPhone);
+        BonusCardDto GetBonusCard(string customerPhoneNumber);
         BonusCard GetBonusCard(int cardNumber);
         
         void CreateBonusCard(BonusCardDto bonusCard);

@@ -28,12 +28,6 @@ namespace BonusCardManager.ApplicationServicesTests.ServicesTests
             var mockCustomerRepository = new Mock<IRepository<Customer, int>>();
             var mockUnitOfWork = new Mock<IUnitOfWork>();
 
-            fakeBonusCards = new List<BonusCard>()
-            {
-                new BonusCard {Id = 1, Balance = 50, ExpirationUTCDate = DateTime.Now},
-                new BonusCard {Id = 2, Balance = 0, ExpirationUTCDate = DateTime.Now.AddDays(1)},
-                new BonusCard {Id = 3, Balance = -10, ExpirationUTCDate = DateTime.Now.AddDays(-1)}
-            };
 
             fakeCustomers = new List<Customer>()
             {
@@ -42,6 +36,17 @@ namespace BonusCardManager.ApplicationServicesTests.ServicesTests
                 new Customer {Id = 3, FullName = "Non dignissim tristique", PhoneNumber = "8805553533"}
             };
 
+            fakeBonusCards = new List<BonusCard>()
+            {
+                new BonusCard {Id = 1, Balance = 50, ExpirationUTCDate = DateTime.Now, Customer = fakeCustomers[0]},
+                new BonusCard {Id = 2, Balance = 0, ExpirationUTCDate = DateTime.Now.AddDays(1), Customer = fakeCustomers[1]},
+                new BonusCard {Id = 3, Balance = -10, ExpirationUTCDate = DateTime.Now.AddDays(-1), Customer = fakeCustomers[2]}
+            };
+
+            fakeCustomers[0].BonusCard = fakeBonusCards[0];
+            fakeCustomers[1].BonusCard = fakeBonusCards[1];
+            fakeCustomers[2].BonusCard = fakeBonusCards[2];
+
             mockBonusCardRepository.Setup(m => m.GetAll())
                           .Returns(fakeBonusCards.AsQueryable);
             mockBonusCardRepository.Setup(m => m.Get(It.IsAny<int>()))
@@ -49,6 +54,8 @@ namespace BonusCardManager.ApplicationServicesTests.ServicesTests
             mockBonusCardRepository.Setup(r => r.Create(It.IsAny<BonusCard>()))
                           .Callback<BonusCard>(t => fakeBonusCards.Add(t));
 
+            mockCustomerRepository.Setup(m => m.GetAll())
+                                  .Returns(fakeCustomers.AsQueryable);
             mockCustomerRepository.Setup(m => m.Get(It.IsAny<int>()))
                                   .Returns<int>(id => fakeCustomers.FirstOrDefault(t => t.Id == id));
 
@@ -170,7 +177,7 @@ namespace BonusCardManager.ApplicationServicesTests.ServicesTests
             };
 
             //Act
-            
+
             //Assert
             Assert.Throws<ArgumentException>(() => bonusCardService.CreateBonusCard(bonusCard));
         }
@@ -312,5 +319,87 @@ namespace BonusCardManager.ApplicationServicesTests.ServicesTests
         #endregion Negative cases
 
         #endregion CreateBonusCard tests 
+
+
+
+        #region GetBonusCard by phone tests 
+
+        #region Positive cases
+
+        [Fact]
+        public void GetBonusCard_CorrectCustomerPhoneNumber_ShouldBeNotNull()
+        {
+            //Arrange
+            var phoneNumber = fakeCustomers[0].PhoneNumber;
+
+            //Act
+            var bonusCard = bonusCardService.GetBonusCard(phoneNumber);
+
+            //Assert
+            Assert.NotNull(bonusCard);
+        }
+
+        [Fact]
+        public void GetBonusCard_CorrectCustomerPhoneNumber_CorrectBonusCardId()
+        {
+            //Arrange
+            var phoneNumber = fakeCustomers[0].PhoneNumber;
+            var expected = fakeCustomers[0].BonusCard.Id;
+
+            //Act
+            var actual = bonusCardService.GetBonusCard(phoneNumber);
+
+            //Assert
+            Assert.Equal(expected, actual.Id);
+        }
+
+        #endregion Positive cases
+
+        #region Negative cases
+
+        [Fact]
+        public void GetBonusCard_NullPhoneNumber_ArgumentException()
+        {
+            //Arrange
+            string phoneNumber = null;
+
+            //Act
+
+            //Assert
+            Assert.Throws<ArgumentException>(() => bonusCardService.GetBonusCard(phoneNumber));
+        }
+
+        [Fact]
+        public void GetBonusCard_NullPhoneNumber_CorrectExceptionMessage()
+        {
+            //Arrange
+            string phoneNumber = null;
+            var expected = "customerPhoneNumber can not be empty";
+
+            //Act
+            var actual = Record.Exception(() => bonusCardService.GetBonusCard(phoneNumber)).Message.Trim();
+
+            //Assert
+            Assert.Equal(expected, actual);
+        }
+
+        [Fact]
+        public void GetBonusCard_NotRealPhoneNumber_Null()
+        {
+            //Arrange
+            string phoneNumber = "ItIsNotAPhone";
+            BonusCardDto expected = null;
+
+            //Act
+            var actual = bonusCardService.GetBonusCard(phoneNumber);
+
+
+            //Assert
+            Assert.Equal(expected, actual);
+        }
+
+        #endregion Negative cases
+
+        #endregion GetBonusCard by phone tests 
     }
 }

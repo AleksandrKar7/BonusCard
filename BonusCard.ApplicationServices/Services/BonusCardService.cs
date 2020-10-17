@@ -4,6 +4,7 @@ using BonusCardManager.ApplicationServices.Validation;
 using BonusCardManager.ApplicationServices.Validation.Interfaces;
 using BonusCardManager.DataAccess.Entities;
 using BonusCardManager.DataAccess.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
 
@@ -61,9 +62,22 @@ namespace BonusCardManager.ApplicationServices.Services
             throw new NotImplementedException();
         }
 
-        public BonusCard GetBonusCard(string customerPhone)
+        public BonusCardDto GetBonusCard(string customerPhoneNumber)
         {
-            throw new NotImplementedException();
+            if(String.IsNullOrWhiteSpace(customerPhoneNumber))
+            {
+                throw new ArgumentException("customerPhoneNumber can not be empty");
+            }
+
+            var bonusCard = unitOfWork.Customers.GetAll()
+                                                .Where(p => p.PhoneNumber == customerPhoneNumber)
+                                                .Select(b => b.BonusCard)
+                                                .Include(c => c.Customer)
+                                                .FirstOrDefault();
+
+            var bonusCardDto = mapper.Map<BonusCard, BonusCardDto>(bonusCard);
+
+            return bonusCardDto;
         }
 
         public void WriteOffBalance(int cardId, decimal price)
