@@ -25,11 +25,6 @@ namespace BonusCardManager.ApplicationServices.Services
             mapper = new MapperService();
         }
 
-        public void AccrualBalance(int cardId, decimal price)
-        {
-            throw new NotImplementedException();
-        }
-
         public void CreateBonusCard(BonusCardDto bonusCardDto)
         {
             var errors = validator.Validate(bonusCardDto);
@@ -53,7 +48,6 @@ namespace BonusCardManager.ApplicationServices.Services
             );
 
             unitOfWork.BonusCards.Create(bonusCard);
-
             unitOfWork.Save();
         }
 
@@ -90,6 +84,29 @@ namespace BonusCardManager.ApplicationServices.Services
             var bonusCardDto = mapper.Map<BonusCard, BonusCardDto>(bonusCard);
 
             return bonusCardDto;
+        }
+
+        public void AccrualBalance(int cardId, decimal amount)
+        {
+            if (cardId <= 0)
+            {
+                throw new ArgumentException("cardId mast be above zero");
+            }
+            if (amount <= 0)
+            {
+                throw new ArgumentException("amount mast be above zero");
+            }
+
+            var bonusCard = unitOfWork.BonusCards.Get(cardId);
+            if (bonusCard.ExpirationUTCDate.Date < DateTime.Now.Date)
+            {
+                throw new ArgumentException("bonus card is expired");
+            }
+
+            bonusCard.Balance += amount;
+
+            unitOfWork.BonusCards.Update(bonusCard);
+            unitOfWork.Save();
         }
 
         public void WriteOffBalance(int cardId, decimal price)
