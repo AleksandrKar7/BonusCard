@@ -9,6 +9,11 @@ namespace BonusCardManager.ApplicationServices.Validation
     {
         public string Validate(BonusCardDto bonusCard)
         {
+            if (bonusCard == null)
+            {
+                return "bonusCard can not be null";
+            }
+
             StringBuilder errorMessageBuilder = new StringBuilder();
 
             if (bonusCard.ExpirationUTCDate.Date < DateTime.Now.Date)

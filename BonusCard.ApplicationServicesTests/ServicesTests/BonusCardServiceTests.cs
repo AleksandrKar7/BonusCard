@@ -132,6 +132,32 @@ namespace BonusCardManager.ApplicationServicesTests.ServicesTests
         #region Negative cases
 
         [Fact]
+        public void CreateBonusCard_Null_ArgumentException()
+        {
+            //Arrange
+            BonusCardDto bonusCard = null;
+
+            //Act
+
+            //Assert
+            Assert.Throws<ArgumentException>(() => bonusCardService.CreateBonusCard(bonusCard));
+        }
+
+        [Fact]
+        public void CreateBonusCard_Null_CorrectExceptionMessage()
+        {
+            //Arrange
+            BonusCardDto bonusCard = null;
+            var expected = "bonusCard can not be null";
+
+            //Act
+            var actual = Record.Exception(() => bonusCardService.CreateBonusCard(bonusCard)).Message.Trim();
+
+            //Assert
+            Assert.Equal(expected, actual);
+        }
+
+        [Fact]
         public void CreateBonusCard_IncorrectExpirationDate_ArgumentException()
         {
             //Arrange
