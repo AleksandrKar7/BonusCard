@@ -601,5 +601,147 @@ namespace BonusCardManager.ApplicationServicesTests.ServicesTests
         #endregion Negative cases
 
         #endregion AccrualBalance tests
+
+
+
+        #region WriteOffBalance tests
+
+        #region Positive cases
+
+        [Fact]
+        public void WriteOffBalance_CorrectCardIdCorrectAmount_BalanceDecreased()
+        {
+            //Arrange
+            var card = fakeBonusCards[0];
+            var amount = 20.00M;
+            var expected = card.Balance - amount;
+
+            //Act
+            bonusCardService.WriteOffBalance(card.Id, amount);
+            var actual = card.Balance;
+
+            //Assert
+            Assert.Equal(expected, actual);
+        }
+
+        #endregion Positive cases
+
+        #region Negative cases
+
+        [Fact]
+        public void WriteOffBalance_IncorrectCardIdCorrectAmount_ArgumentException()
+        {
+            //Arrange
+            var cardId = -1;
+            var amount = 20.00M;
+
+            //Act
+
+            //Assert
+            Assert.Throws<ArgumentException>(() => bonusCardService.WriteOffBalance(cardId, amount));
+        }
+
+        [Fact]
+        public void WriteOffBalance_IncorrectCardIdCorrectAmount_CorrectExceptionMessage()
+        {
+            //Arrange
+            var cardId = -1;
+            var amount = 20.00M;
+            var expected = "cardId mast be above zero";
+
+            //Act
+            var actual = Record.Exception(() => bonusCardService.WriteOffBalance(cardId, amount)).Message.Trim();
+
+            //Assert
+            Assert.Equal(expected, actual);
+        }
+
+        [Fact]
+        public void WriteOffBalance_CorrectCardIdNegativeAmount_ArgumentException()
+        {
+            //Arrange
+            var cardId = fakeBonusCards[0].Id;
+            var amount = -20.00M;
+
+            //Act
+
+            //Assert
+            Assert.Throws<ArgumentException>(() => bonusCardService.WriteOffBalance(cardId, amount));
+        }
+
+        [Fact]
+        public void WriteOffBalance_CorrectCardIdNegativeAmount_CorrectExceptionMessage()
+        {
+            //Arrange
+            var cardId = fakeBonusCards[0].Id;
+            var amount = -20.00M;
+            var expected = "amount mast be above zero";
+
+            //Act
+            var actual = Record.Exception(() => bonusCardService.WriteOffBalance(cardId, amount)).Message.Trim();
+            
+            //Assert
+            Assert.Equal(expected, actual);
+        }
+
+        [Fact]
+        public void WriteOffBalance_ExpiredCardCorrectAmount_ArgumentException()
+        {
+            //Arrange
+            var cardId = fakeBonusCards[2].Id;
+            var amount = 20.00M;
+
+            //Act
+
+            //Assert
+            Assert.Throws<ArgumentException>(() => bonusCardService.WriteOffBalance(cardId, amount));
+        }
+
+        [Fact]
+        public void WriteOffBalance_ExpiredCardCorrectAmount_CorrectExceptionMessage()
+        {
+            //Arrange
+            var cardId = fakeBonusCards[2].Id;
+            var amount = 20.00M;
+            var expected = "bonus card is expired";
+
+            //Act
+            var actual = Record.Exception(() => bonusCardService.WriteOffBalance(cardId, amount)).Message.Trim();
+            //Assert
+
+            Assert.Equal(expected, actual);
+        }
+
+        [Fact]
+        public void WriteOffBalance_NegativeCardBalanceCorrectAmount_ArgumentException()
+        {
+            //Arrange
+            var cardId = fakeBonusCards[1].Id;
+            var amount = 20.00M;
+
+            //Act
+
+            //Assert
+            Assert.Throws<ArgumentException>(() => bonusCardService.WriteOffBalance(cardId, amount));
+        }
+
+        [Fact]
+        public void WriteOffBalance_NegativeCardBalanceCorrectAmount_CorrectExceptionMessage()
+        {
+            //Arrange
+            var cardId = fakeBonusCards[1].Id;
+            var amount = 20.00M;
+            var expected = "not enough money on the bonus card";
+
+            //Act
+            var actual = Record.Exception(() => bonusCardService.WriteOffBalance(cardId, amount)).Message.Trim();
+            
+            //Assert
+            Assert.Equal(expected, actual);
+        }
+
+        #endregion Negative cases
+
+        #endregion AccrualBalance tests
     }
 }

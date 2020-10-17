@@ -16,7 +16,6 @@ namespace BonusCardManager.ApplicationServices.Services
         private readonly IValidator<BonusCardDto> validator;
         private readonly MapperService mapper;
 
-
         public BonusCardService(IUnitOfWork unitOfWork)
         {
             this.unitOfWork = unitOfWork;
@@ -109,9 +108,31 @@ namespace BonusCardManager.ApplicationServices.Services
             unitOfWork.Save();
         }
 
-        public void WriteOffBalance(int cardId, decimal price)
+        public void WriteOffBalance(int cardId, decimal amount)
         {
-            throw new NotImplementedException();
+            if (cardId <= 0)
+            {
+                throw new ArgumentException("cardId mast be above zero");
+            }
+            if (amount <= 0)
+            {
+                throw new ArgumentException("amount mast be above zero");
+            }
+
+            var bonusCard = unitOfWork.BonusCards.Get(cardId);
+            if (bonusCard.ExpirationUTCDate.Date < DateTime.Now.Date)
+            {
+                throw new ArgumentException("bonus card is expired");
+            }
+
+            if(bonusCard.Balance - amount < 0)
+            {
+                throw new ArgumentException("not enough money on the bonus card");
+            }
+            bonusCard.Balance -= amount;
+
+            unitOfWork.BonusCards.Update(bonusCard);
+            unitOfWork.Save();
         }
     }
 }
