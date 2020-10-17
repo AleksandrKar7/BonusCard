@@ -57,9 +57,21 @@ namespace BonusCardManager.ApplicationServices.Services
             unitOfWork.Save();
         }
 
-        public BonusCard GetBonusCard(int cardNumber)
+        public BonusCardDto GetBonusCard(int cardNumber)
         {
-            throw new NotImplementedException();
+            if (cardNumber <= 0)
+            {
+                throw new ArgumentException("cardNumber mast be above zero");
+            }
+
+            var bonusCard = unitOfWork.BonusCards.GetAll()
+                                                 .Where(c => c.Number == cardNumber)
+                                                 .Include(c => c.Customer)
+                                                 .FirstOrDefault();
+
+            var bonusCardDto = mapper.Map<BonusCard, BonusCardDto>(bonusCard);
+
+            return bonusCardDto;
         }
 
         public BonusCardDto GetBonusCard(string customerPhoneNumber)

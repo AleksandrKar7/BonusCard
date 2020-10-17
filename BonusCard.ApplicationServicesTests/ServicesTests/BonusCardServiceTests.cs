@@ -38,9 +38,9 @@ namespace BonusCardManager.ApplicationServicesTests.ServicesTests
 
             fakeBonusCards = new List<BonusCard>()
             {
-                new BonusCard {Id = 1, Balance = 50, ExpirationUTCDate = DateTime.Now, Customer = fakeCustomers[0]},
-                new BonusCard {Id = 2, Balance = 0, ExpirationUTCDate = DateTime.Now.AddDays(1), Customer = fakeCustomers[1]},
-                new BonusCard {Id = 3, Balance = -10, ExpirationUTCDate = DateTime.Now.AddDays(-1), Customer = fakeCustomers[2]}
+                new BonusCard {Id = 1, Balance = 50, Number = 1, ExpirationUTCDate = DateTime.Now, Customer = fakeCustomers[0]},
+                new BonusCard {Id = 2, Balance = 0, Number = 2, ExpirationUTCDate = DateTime.Now.AddDays(1), Customer = fakeCustomers[1]},
+                new BonusCard {Id = 3, Balance = -10, Number = 3, ExpirationUTCDate = DateTime.Now.AddDays(-1), Customer = fakeCustomers[2]}
             };
 
             fakeCustomers[0].BonusCard = fakeBonusCards[0];
@@ -393,6 +393,87 @@ namespace BonusCardManager.ApplicationServicesTests.ServicesTests
             //Act
             var actual = bonusCardService.GetBonusCard(phoneNumber);
 
+
+            //Assert
+            Assert.Equal(expected, actual);
+        }
+
+        #endregion Negative cases
+
+        #endregion GetBonusCard by phone tests 
+
+
+
+        #region GetBonusCard by card number tests 
+
+        #region Positive cases
+
+        [Fact]
+        public void GetBonusCard_CorrectCardNumber_ShouldBeNotNull()
+        {
+            //Arrange
+            var cardNumber = fakeBonusCards[0].Number;
+
+            //Act
+            var bonusCard = bonusCardService.GetBonusCard(cardNumber);
+
+            //Assert
+            Assert.NotNull(bonusCard);
+        }
+
+        [Fact]
+        public void GetBonusCard_CorrectCardNumber_CorrectBonusCardId()
+        {
+            //Arrange
+            var cardNumber = fakeBonusCards[0].Number;
+            var expected = fakeBonusCards[0].Id;
+
+            //Act
+            var actual = bonusCardService.GetBonusCard(cardNumber);
+
+            //Assert
+            Assert.Equal(expected, actual.Id);
+        }
+
+        #endregion Positive cases
+
+        #region Negative cases
+
+        [Fact]
+        public void GetBonusCard_CardNumberLessZero_ArgumentException()
+        {
+            //Arrange
+            var cardNumber = -1;
+
+            //Act
+
+            //Assert
+            Assert.Throws<ArgumentException>(() => bonusCardService.GetBonusCard(cardNumber));
+        }
+
+        [Fact]
+        public void GetBonusCard_CardNumberLessZero_CorrectExceptionMessage()
+        {
+            //Arrange
+            var cardNumber = -1;
+            var expected = "cardNumber mast be above zero";
+
+            //Act
+            var actual = Record.Exception(() => bonusCardService.GetBonusCard(cardNumber)).Message.Trim();
+
+            //Assert
+            Assert.Equal(expected, actual);
+        }
+
+        [Fact]
+        public void GetBonusCard_NonExistentCardNumber_Null()
+        {
+            //Arrange
+            var cardNumber = Int32.MaxValue;
+            BonusCardDto expected = null;
+
+            //Act
+            var actual = bonusCardService.GetBonusCard(cardNumber);
 
             //Assert
             Assert.Equal(expected, actual);
