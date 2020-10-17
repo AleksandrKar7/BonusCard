@@ -28,6 +28,22 @@ namespace BonusCardManager.ApplicationServicesTests
         }
 
         [Fact]
+        public void GetUniqueNumber_FirstSpinMaxNumber1_ShouldBe1()
+        {
+            //Arrange
+            var idsArr = new int[] { };
+            var maxNumber = 1;
+
+            var expected = 1;
+
+            //Act
+            var actual = NumberRandomizer.GetUniqueNumber(idsArr, maxNumber);
+
+            //Assert
+            Assert.Equal(expected, actual);
+        }
+
+        [Fact]
         public void GetUniqueNumber_FreeNumber2Or4and6In10ItemsArray_Return2Or4Or6()
         {
             //Arrange
@@ -84,7 +100,7 @@ namespace BonusCardManager.ApplicationServicesTests
             int[] idsArr = null;
             var maxNumber = 999999;
 
-            var expected = "uniqueArr cannot be null";
+            var expected = "usedNumbers cannot be null";
 
             //Act
             var actual = Record.Exception(() => NumberRandomizer.GetUniqueNumber(idsArr, maxNumber)).Message.Trim();

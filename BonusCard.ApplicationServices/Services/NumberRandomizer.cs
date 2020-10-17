@@ -8,11 +8,11 @@ namespace BonusCardManager.ApplicationServices.Services
     {
         private const int MaxNumber = 999999;
 
-        public static int GetUniqueNumber(IEnumerable<int> uniqueArr, int maxNumber = MaxNumber)
+        public static int GetUniqueNumber(IEnumerable<int> usedNumbers, int maxNumber = MaxNumber)
         {
-            if(uniqueArr == null)
+            if(usedNumbers == null)
             {
-                throw new NullReferenceException("uniqueArr cannot be null");
+                throw new NullReferenceException("usedNumbers cannot be null");
             }
             if (maxNumber < 0)
             {
@@ -20,17 +20,17 @@ namespace BonusCardManager.ApplicationServices.Services
             }
 
             var allPossibleNumbers = Enumerable.Range(1, maxNumber);
-            var missingItems = allPossibleNumbers.Except(uniqueArr).ToList();
+            var freeNumbers = allPossibleNumbers.Except(usedNumbers).ToList();
 
-            if(missingItems.Count() == 0)
+            if(freeNumbers.Count() == 0)
             {
                 //Not really sure about the correct type of exception
                 throw new ArgumentException("No free numbers in this range");
             }
 
-            var itemNumber = new Random().Next(0, missingItems.Count());
+            var newNumber = freeNumbers[new Random().Next(0, freeNumbers.Count())];
 
-            return missingItems[itemNumber];
+            return newNumber;
         }
     }
 }
