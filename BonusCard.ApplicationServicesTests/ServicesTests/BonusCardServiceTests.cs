@@ -117,7 +117,7 @@ namespace BonusCardManager.ApplicationServicesTests.ServicesTests
             var expected = "Expiration date cannot be less than the current date";
 
             //Act
-            var actual = Assert.Throws<ArgumentException>(() => bonusCardService.Create(bonusCard)).Message.Trim();
+            var actual = Record.Exception(() => bonusCardService.Create(bonusCard)).Message.Trim();
 
             //Assert
             Assert.Equal(expected, actual);
@@ -153,7 +153,7 @@ namespace BonusCardManager.ApplicationServicesTests.ServicesTests
             var expected = "Balance cannot be less than zero";
 
             //Act
-            var actual = Assert.Throws<ArgumentException>(() => bonusCardService.Create(bonusCard)).Message.Trim();
+            var actual = Record.Exception(() => bonusCardService.Create(bonusCard)).Message.Trim();
 
             //Assert
             Assert.Equal(expected, actual);
