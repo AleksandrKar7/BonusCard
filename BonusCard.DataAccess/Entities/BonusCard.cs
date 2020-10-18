@@ -1,6 +1,5 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BonusCardManager.DataAccess.Entities
 {
@@ -21,8 +20,7 @@ namespace BonusCardManager.DataAccess.Entities
         [MaxLength(999999)]
         public int Number { get; set; }
 
-        [Required]
-        [ForeignKey("CustomerId")]
+        public int CustomerId { get; set; }
         public Customer Customer { get; set; }
     }
 }

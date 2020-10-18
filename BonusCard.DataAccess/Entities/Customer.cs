@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BonusCardManager.DataAccess.Entities
 {
@@ -16,7 +15,6 @@ namespace BonusCardManager.DataAccess.Entities
         [MaxLength(12)]
         public string PhoneNumber { get; set; }
 
-        [ForeignKey("BonusCard")]
         public BonusCard BonusCard { get; set; }
     }
 }

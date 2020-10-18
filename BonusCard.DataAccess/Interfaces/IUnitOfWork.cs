@@ -1,5 +1,4 @@
-﻿
-using BonusCardManager.DataAccess.Entities;
+﻿using BonusCardManager.DataAccess.Entities;
 
 namespace BonusCardManager.DataAccess.Interfaces
 {

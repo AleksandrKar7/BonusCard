@@ -12,7 +12,7 @@ namespace BonusCardManager.DataAccess
 
         #endregion
 
-        public DataContext()
+        public DataContext(DbContextOptions<DataContext> options) : base(options) 
         {
             Database.EnsureCreated();
         }
@@ -21,9 +21,9 @@ namespace BonusCardManager.DataAccess
         {
             modelBuilder
                 .Entity<Customer>()
-                .HasOne(u => u.BonusCard)
-                .WithOne(p => p.Customer)
-                .HasForeignKey<BonusCard>(p => p.Customer);
+                .HasOne(c => c.BonusCard)
+                .WithOne(b => b.Customer)
+                .HasForeignKey<BonusCard>(b => b.CustomerId);
 
             modelBuilder.Entity<BonusCard>()
                 .HasIndex(u => u.Number)
