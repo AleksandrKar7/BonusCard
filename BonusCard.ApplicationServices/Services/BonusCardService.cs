@@ -39,6 +39,10 @@ namespace BonusCardManager.ApplicationServices.Services
             {
                 throw new ArgumentException("Customer not found");
             }
+            if (bonusCard.Customer.BonusCard != null)
+            {
+                throw new ArgumentException("Customer already has a card");
+            }
 
             bonusCard.Number = NumberRandomizer.GetUniqueNumber(
                 unitOfWork.BonusCards.GetAll()
@@ -74,11 +78,10 @@ namespace BonusCardManager.ApplicationServices.Services
                 throw new ArgumentException("customerPhoneNumber can not be empty");
             }
 
-            var bonusCard = unitOfWork.Customers.GetAll()
-                                                .Where(p => p.PhoneNumber == customerPhoneNumber)
-                                                .Select(b => b.BonusCard)
-                                                .Include(c => c.Customer)
-                                                .FirstOrDefault();
+            var bonusCard = unitOfWork.BonusCards.GetAll()
+                                    .Include(c => c.Customer)
+                                    .Where(p => p.Customer.PhoneNumber == customerPhoneNumber)
+                                    .FirstOrDefault();
 
             var bonusCardDto = mapper.Map<BonusCard, BonusCardDto>(bonusCard);
 
@@ -97,6 +100,10 @@ namespace BonusCardManager.ApplicationServices.Services
             }
 
             var bonusCard = unitOfWork.BonusCards.Get(cardId);
+            if(bonusCard == null)
+            {
+                throw new ArgumentException("bonus card not found");
+            }
             if (bonusCard.ExpirationUTCDate.Date < DateTime.Now.Date)
             {
                 throw new ArgumentException("bonus card is expired");
@@ -120,6 +127,10 @@ namespace BonusCardManager.ApplicationServices.Services
             }
 
             var bonusCard = unitOfWork.BonusCards.Get(cardId);
+            if (bonusCard == null)
+            {
+                throw new ArgumentException("bonus card not found");
+            }
             if (bonusCard.ExpirationUTCDate.Date < DateTime.Now.Date)
             {
                 throw new ArgumentException("bonus card is expired");

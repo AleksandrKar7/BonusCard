@@ -20,6 +20,8 @@ namespace BonusCardManager.ApplicationServicesTests.ServicesTests
 
         #endregion
 
+
+
         #region Constructor
 
         public BonusCardServiceTests()
@@ -43,14 +45,12 @@ namespace BonusCardManager.ApplicationServicesTests.ServicesTests
                 new BonusCard {Id = 3, Balance = -10, Number = 3, ExpirationUTCDate = DateTime.Now.AddDays(-1), Customer = fakeCustomers[2]}
             };
 
-            fakeCustomers[0].BonusCard = fakeBonusCards[0];
-            fakeCustomers[1].BonusCard = fakeBonusCards[1];
             fakeCustomers[2].BonusCard = fakeBonusCards[2];
 
             mockBonusCardRepository.Setup(m => m.GetAll())
                           .Returns(fakeBonusCards.AsQueryable);
             mockBonusCardRepository.Setup(m => m.Get(It.IsAny<int>()))
-                          .Returns<int>(id => fakeBonusCards.Single(t => t.Id == id));
+                          .Returns<int>(id => fakeBonusCards.FirstOrDefault(t => t.Id == id));
             mockBonusCardRepository.Setup(r => r.Create(It.IsAny<BonusCard>()))
                           .Callback<BonusCard>(t => fakeBonusCards.Add(t));
             mockBonusCardRepository.Setup(r => r.Update(It.IsAny<BonusCard>()))
@@ -71,6 +71,8 @@ namespace BonusCardManager.ApplicationServicesTests.ServicesTests
         }
 
         #endregion
+
+
 
         #region CreateBonusCard tests 
 
@@ -117,7 +119,7 @@ namespace BonusCardManager.ApplicationServicesTests.ServicesTests
         }
 
         [Fact]
-        public void CreateBonusCard_CorrectBonusCardWithCustomer3_CustomerId3()
+        public void CreateBonusCard_CorrectBonusCardWithCustomer2_CustomerId2()
         {
             //Arrange
             var bonusCard = new BonusCardDto
@@ -125,7 +127,7 @@ namespace BonusCardManager.ApplicationServicesTests.ServicesTests
                 Id = 5,
                 Balance = 0,
                 ExpirationUTCDate = DateTime.Now.AddDays(1),
-                CustomerId = 3
+                CustomerId = 2
             };
 
             //Act
@@ -318,6 +320,44 @@ namespace BonusCardManager.ApplicationServicesTests.ServicesTests
             Assert.Equal(expected, actual);
         }
 
+        [Fact]
+        public void CreateBonusCard_CustomeHasACard_ArgumentException()
+        {
+            //Arrange
+            var bonusCard = new BonusCardDto
+            {
+                Id = 5,
+                Balance = 50,
+                ExpirationUTCDate = DateTime.Now.AddDays(1),
+                CustomerId = 3
+            };
+
+            //Act
+
+            //Assert
+            Assert.Throws<ArgumentException>(() => bonusCardService.CreateBonusCard(bonusCard));
+        }
+
+        [Fact]
+        public void CreateBonusCard_ustomeHasACard_CorrectExceptionMessage()
+        {
+            //Arrange
+            var bonusCard = new BonusCardDto
+            {
+                Id = 5,
+                Balance = 50,
+                ExpirationUTCDate = DateTime.Now.AddDays(1),
+                CustomerId = 3
+            };
+            var expected = "Customer already has a card";
+
+            //Act
+            var actual = Record.Exception(() => bonusCardService.CreateBonusCard(bonusCard)).Message.Trim();
+
+            //Assert
+            Assert.Equal(expected, actual);
+        }
+
         #endregion Negative cases
 
         #endregion CreateBonusCard tests 
@@ -345,8 +385,8 @@ namespace BonusCardManager.ApplicationServicesTests.ServicesTests
         public void GetBonusCard_CorrectCustomerPhoneNumber_CorrectBonusCardId()
         {
             //Arrange
-            var phoneNumber = fakeCustomers[0].PhoneNumber;
-            var expected = fakeCustomers[0].BonusCard.Id;
+            var phoneNumber = fakeCustomers[2].PhoneNumber;
+            var expected = fakeCustomers[2].BonusCard.Id;
 
             //Act
             var actual = bonusCardService.GetBonusCard(phoneNumber);
@@ -598,6 +638,35 @@ namespace BonusCardManager.ApplicationServicesTests.ServicesTests
             Assert.Equal(expected, actual);
         }
 
+        [Fact]
+        public void AccrualBalance_NotRealCardCardCorrectAmount_ArgumentException()
+        {
+            //Arrange
+            var cardId = Int32.MaxValue;
+            var amount = 20.00M;
+
+
+            //Act
+
+            //Assert
+            Assert.Throws<ArgumentException>(() => bonusCardService.AccrualBalance(cardId, amount));
+        }
+
+        [Fact]
+        public void AccrualBalance_NotRealCardCorrectAmount_CorrectExceptionMessage()
+        {
+            //Arrange
+            var cardId = Int32.MaxValue;
+            var amount = 20.00M;
+            var expected = "bonus card not found";
+
+            //Act
+            var actual = Record.Exception(() => bonusCardService.AccrualBalance(cardId, amount)).Message.Trim();
+            //Assert
+
+            Assert.Equal(expected, actual);
+        }
+
         #endregion Negative cases
 
         #endregion AccrualBalance tests
@@ -737,6 +806,35 @@ namespace BonusCardManager.ApplicationServicesTests.ServicesTests
             var actual = Record.Exception(() => bonusCardService.WriteOffBalance(cardId, amount)).Message.Trim();
             
             //Assert
+            Assert.Equal(expected, actual);
+        }
+
+        [Fact]
+        public void WriteOffBalance_NotRealCardCardCorrectAmount_ArgumentException()
+        {
+            //Arrange
+            var cardId = Int32.MaxValue;
+            var amount = 20.00M;
+
+
+            //Act
+
+            //Assert
+            Assert.Throws<ArgumentException>(() => bonusCardService.WriteOffBalance(cardId, amount));
+        }
+
+        [Fact]
+        public void WriteOffBalance_NotRealCardCorrectAmount_CorrectExceptionMessage()
+        {
+            //Arrange
+            var cardId = Int32.MaxValue;
+            var amount = 20.00M;
+            var expected = "bonus card not found";
+
+            //Act
+            var actual = Record.Exception(() => bonusCardService.WriteOffBalance(cardId, amount)).Message.Trim();
+            //Assert
+
             Assert.Equal(expected, actual);
         }
 
