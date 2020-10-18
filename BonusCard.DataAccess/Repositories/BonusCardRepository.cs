@@ -42,7 +42,7 @@ namespace BonusCardManager.DataAccess.Repositories
 
         public void Update(BonusCard item)
         {
-            throw new NotImplementedException();
+            dataContext.Entry(item).State = EntityState.Modified;
         }
     }
 }
