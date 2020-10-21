@@ -29,6 +29,7 @@ namespace BonusCardManager.WebAPI
             services.AddTransient<IUnitOfWork, UnitOfWork>(e => new UnitOfWork(e.GetService<DataContext>()));
 
             services.AddTransient<IBonusCardService, BonusCardService>();
+            services.AddTransient<ICustomerService, CustomerService>();
 
             services.AddControllers();
         }
