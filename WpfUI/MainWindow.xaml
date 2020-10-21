@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:WpfUI" 
         xmlns:viewmodels="clr-namespace:BonusCardManager.WpfUI.ViewModels"
         mc:Ignorable="d"
-        Title="MainWindow" Height="600" Width="800" MinHeight="450" MinWidth="700">
+        Title="MainWindow" MaxHeight="450" MaxWidth="700" MinHeight="450" MinWidth="700">
     
     <Window.DataContext>
         <viewmodels:NavigationViewModel />
@@ -31,10 +31,10 @@
         <DockPanel Grid.Column="0" Grid.Row="0" Grid.RowSpan="5" Background="WhiteSmoke" >
             <StackPanel>
                 <Button Content="Поиск по номеру телефона" FontSize="16px" Height="40px" Width="Auto" Command="{Binding UpdateViewCommand}" CommandParameter="SearchByPhoneNumber"/>
-                <Button Content="Поиск по номеру карты" FontSize="16px" Height="40px" Width="Auto"  Command="{Binding UpdateViewCommand}" CommandParameter="SearchByCardNumber"/>
+                <Button Content="Поиск по номеру карты" FontSize="16px" Height="40px" Width="Auto" Command="{Binding UpdateViewCommand}" CommandParameter="SearchByCardNumber"/>
                 <Border Width="Auto" Height="50px"/>
 
-                <Button Content="Добавление новой карты" FontSize="16px" Height="40px" Width="Auto"/>
+                <Button Content="Добавление новой карты" FontSize="16px" Height="40px" Width="Auto" Command="{Binding UpdateViewCommand}" CommandParameter="CreateBonusCard"/>
             </StackPanel>
         </DockPanel>
 

@@ -16,6 +16,9 @@
         <DataTemplate DataType="{x:Type viewmodels:BonusCardViewModel}">
             <views:ShowBonusCardView/>
         </DataTemplate>
+        <DataTemplate DataType="{x:Type viewmodels:CreateBonusCardViewModel}">
+            <views:CreateBonusCardView/>
+        </DataTemplate>
     </Application.Resources>
 </Application>
 

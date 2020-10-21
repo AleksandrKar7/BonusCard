@@ -28,6 +28,10 @@ namespace BonusCardManager.WpfUI.ViewModels
                     {
                         this.SelectedViewModel = new SearchByPhoneNumberViewModel(this);
                     }
+                    if (param.ToString() == "CreateBonusCard")
+                    {
+                        this.SelectedViewModel = new CreateBonusCardViewModel(this);
+                    }
                 });
             } 
         }

@@ -3,6 +3,7 @@ using BonusCardManager.WpfUI.Services.Interfaces;
 using Newtonsoft.Json;
 using System.Net;
 using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace BonusCardManager.WpfUI.Services
@@ -75,6 +76,28 @@ namespace BonusCardManager.WpfUI.Services
                     return response.StatusCode == HttpStatusCode.OK;
                 }
             }
+        }
+
+        public async Task<BonusCardModel> CreateBonusCard(BonusCardModel bonusCard)
+        {
+            using (var httpClient = new HttpClient())
+            {
+                var request = "https://localhost:44389/api/BonusCard";
+                var body = JsonConvert.SerializeObject(bonusCard);
+                using (var response = await httpClient.PostAsync(request, new StringContent(body, Encoding.UTF8, "application/json")))
+                {
+                    if(response.StatusCode == HttpStatusCode.Created)
+                    {
+                        string apiResponse = await response.Content.ReadAsStringAsync();
+
+                        var newBonusCard = JsonConvert.DeserializeObject<BonusCardModel>(apiResponse);
+
+                        return newBonusCard;
+                    }
+                }
+            }
+
+            return null;
         }
     }
 }
