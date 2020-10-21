@@ -1,0 +1,16 @@
+﻿<UserControl x:Class="BonusCardManager.WpfUI.Views.SearchByCardNumberView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:BonusCardManager.WpfUI.Views" xmlns:viewmodels="clr-namespace:BonusCardManager.WpfUI.ViewModels"
+        mc:Ignorable="d"
+        Background="White">
+
+    <Grid>
+        <TextBlock HorizontalAlignment="Center" FontSize="25px" Height="40" Margin="0,10,0,0" Text="Поиск карты по номеру карты" TextAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Top" Width="Auto"/>
+        <TextBox HorizontalAlignment="Center" MaxLength="6" PreviewTextInput="NumberValidationTextBox" Margin="0,80,0,0" Text="{Binding Path=CardNumber}" FontSize="40px" TextAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Top" Width="300" RenderTransformOrigin="0.5,0.5" Height="60"/>
+        <Button Content="Поиск" Width="120px" FontSize="25px" Height="40px" HorizontalAlignment="Center" Margin="0,145,0,0" VerticalAlignment="Top" Command="{Binding SearchByCardNumber}"/>
+        <TextBlock HorizontalAlignment="Center" Height="25" Margin="0,50,0,0" Text="{Binding Path=Message}" TextAlignment="Center" FontSize="18px" Foreground="Red" TextWrapping="Wrap" VerticalAlignment="Top" Width="300"/>
+    </Grid>
+</UserControl>
