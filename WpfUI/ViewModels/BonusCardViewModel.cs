@@ -1,11 +1,7 @@
 ﻿using BonusCardManager.WpfUI.Commands;
 using BonusCardManager.WpfUI.Models;
-using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
 using System.Net;
-using System.Net.Http;
-using System.Text;
 using System.Windows.Input;
 
 namespace BonusCardManager.WpfUI.ViewModels
@@ -58,6 +54,15 @@ namespace BonusCardManager.WpfUI.ViewModels
             set { message = value; OnPropertyChanged(nameof(Message)); }
         }
 
+        private void RefreshViewProperties()
+        {
+            OnPropertyChanged(nameof(ExpirationUTCDate));
+            OnPropertyChanged(nameof(Balance));
+            OnPropertyChanged(nameof(Number));
+            OnPropertyChanged(nameof(CustomerFullName));
+            OnPropertyChanged(nameof(CustomerPhoneNumber));
+        }
+
         public ICommand AccrualBonusCardBalance
         {
             get
@@ -67,24 +72,26 @@ namespace BonusCardManager.WpfUI.ViewModels
 
                     if (!String.IsNullOrWhiteSpace(balanceChanges) && Decimal.TryParse(balanceChanges, out decimal amount))
                     {
-
-                        using (var httpClient = new HttpClient())
+                        Message = "Запрос в обработке...";
+                        var responseCode = await BonusCardModelService.AccrualBalanceAsync(bonusCard.Id, amount);
+                        if (responseCode == HttpStatusCode.OK)
                         {
-                            Message = "Запрос в обработке...";
-
-                            var request = "https://localhost:44389/api/BonusCard/" + bonusCard.Id + "/Accrual/" + amount;
-
-                            using (var response = await httpClient.PutAsync(request, null))
+                            Message = "Готово. Обновление данных...";
+                            var result = await BonusCardModelService.GetBonusCardByCardNumber(bonusCard.Number);
+                            if(result.ResponseCode == HttpStatusCode.OK)
                             {
-                                if (response.StatusCode == HttpStatusCode.OK)
-                                {
-                                    Message = "Готово...";
-                                }
-                                else
-                                {
-                                    Message = "Баланс карточки №" + Number + " не изменен";
-                                }
+                                bonusCard = result.BonusCard;
+                                RefreshViewProperties();
+                                Message = "Готово";
                             }
+                            else
+                            {
+                                Message = "Ну удалось обновить данные";
+                            }
+                        }
+                        else
+                        {
+                            Message = "Баланс карточки №" + Number + " не изменен";
                         }
                     }
                     else
@@ -109,23 +116,27 @@ namespace BonusCardManager.WpfUI.ViewModels
                             Message = "Сумма на карточке не достаточна";
                             return;
                         }
-                        using (var httpClient = new HttpClient())
-                        {
-                            Message = "Запрос в обработке...";
-                            
-                            var request = "https://localhost:44389/api/BonusCard/" + bonusCard.Id + "/WriteOff/" + amount;
+                        Message = "Запрос в обработке...";
 
-                            using (var response = await httpClient.PutAsync(request, null))
+                        var responseCode = await BonusCardModelService.WriteOffBalanceAsync(bonusCard.Id, amount);
+                        if (responseCode == HttpStatusCode.OK)
+                        {
+                            Message = "Готово. Обновление данных...";
+                            var result = await BonusCardModelService.GetBonusCardByCardNumber(bonusCard.Number);
+                            if (result.ResponseCode == HttpStatusCode.OK)
                             {
-                                if (response.StatusCode == HttpStatusCode.OK)
-                                {
-                                    Message = "Готово...";
-                                }
-                                else
-                                {
-                                    Message = "Баланс карточки №" + Number + " не изменен";
-                                }
+                                bonusCard = result.BonusCard;
+                                RefreshViewProperties();
+                                Message = "Готово";
                             }
+                            else
+                            {
+                                Message = "Ну удалось обновить данные";
+                            }
+                        }
+                        else
+                        {
+                            Message = "Баланс карточки №" + Number + " не изменен";
                         }
                     }
                     else

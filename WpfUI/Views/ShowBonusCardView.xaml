@@ -10,11 +10,11 @@
     <Grid>
         <Border BorderThickness="1" BorderBrush="Black" Height="200" Margin="10,10,10,10" VerticalAlignment="Top" Width="350">
             <Grid>
-                <TextBlock FontSize="22px" Height="40" Margin="10,10,0,0" Text="{Binding Path=Number, StringFormat=№{0}}" TextAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Top" Width="103" HorizontalAlignment="Left"/>
-                <TextBlock FontSize="22px" Height="40" Margin="118,10,10,0" Text="{Binding Path=ExpirationUTCDate, StringFormat=До {0}}" TextAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Top"/>
-                <TextBlock FontSize="18px" Margin="10,95,10,45" Text="{Binding Path=CustomerFullName, StringFormat=ФИО: {0}}" TextAlignment="Left" TextWrapping="Wrap"/>
-                <TextBlock HorizontalAlignment="Center" FontSize="18px" Margin="0,158,0,0" Text="{Binding Path=CustomerPhoneNumber, StringFormat=Телефон {0}}" TextAlignment="Left" TextWrapping="Wrap" Width="328" Height="30" VerticalAlignment="Top"/>
-                <TextBlock FontSize="26px" Height="40" Margin="10,55,10,0" Text="{Binding Path=Balance, StringFormat=Баланс: {0}}" TextAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Top"/>
+                <TextBox IsReadOnly="True" FontSize="22px" Height="40" Margin="10,10,0,0" Text="{Binding Path=Number, StringFormat=№{0}, Mode=OneWay}" TextAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Top" Width="103" HorizontalAlignment="Left"/>
+                <TextBox IsReadOnly="True" FontSize="22px" Height="40" Margin="118,10,10,0" Text="{Binding Path=ExpirationUTCDate, StringFormat=До {0}, Mode=OneWay}" TextAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Top"/>
+                <TextBox IsReadOnly="True" FontSize="18px" Margin="10,95,10,45" Text="{Binding Path=CustomerFullName, StringFormat=ФИО: {0}, Mode=OneWay}" TextAlignment="Left" TextWrapping="Wrap"/>
+                <TextBox IsReadOnly="True" HorizontalAlignment="Center" FontSize="18px" Margin="0,158,0,0" Text="{Binding Path=CustomerPhoneNumber, StringFormat=Телефон {0}, Mode=OneWay}" TextAlignment="Left" TextWrapping="Wrap" Width="328" Height="30" VerticalAlignment="Top"/>
+                <TextBox IsReadOnly="True" FontSize="26px" Height="40" Margin="10,55,10,0" Text="{Binding Path=Balance, StringFormat=Баланс: {0}, Mode=OneWay}" TextAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Top"/>
             </Grid>
         </Border>
 
@@ -23,7 +23,7 @@
         <TextBox MaxLength="13" PreviewTextInput="NumberValidationTextBox" Margin="10,279,10,0" Text="{Binding BalanceChanges}" FontSize="40px" TextAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Top" Width="350" RenderTransformOrigin="0.5,0.5" Height="60"/>
         <Button Content="Начислить" Width="130" FontSize="25px" Height="40"  Background="Green" Foreground="White" Margin="230,344,10,0" VerticalAlignment="Top" Command="{Binding AccrualBonusCardBalance}"/>
         <Button Content="Списать" Width="130" FontSize="25px" Height="40" Background="#CC0000" Foreground="White" Margin="10,344,230,0" VerticalAlignment="Top" Command="{Binding WriteOffBonusCardBalance}"/>
-        <TextBlock Height="25" Margin="10,249,10,0" Text="{Binding Message}" TextAlignment="Left" FontSize="18px" TextWrapping="Wrap" VerticalAlignment="Top" Width="Auto"/>
+        <TextBlock Height="25" Margin="10,249,10,0" Text="{Binding Message}" TextAlignment="Center" FontSize="18px" TextWrapping="Wrap" VerticalAlignment="Top" Width="350"/>
 
 
     </Grid>

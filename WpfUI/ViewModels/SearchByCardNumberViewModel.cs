@@ -1,11 +1,7 @@
 ﻿using BonusCardManager.WpfUI.Commands;
 using BonusCardManager.WpfUI.Models;
-using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
 using System.Net;
-using System.Net.Http;
-using System.Text;
 using System.Windows.Input;
 
 namespace BonusCardManager.WpfUI.ViewModels
@@ -39,30 +35,19 @@ namespace BonusCardManager.WpfUI.ViewModels
             {
                 return new DelegateCommand(async (obj) =>
                 {
-
                     if (!String.IsNullOrWhiteSpace(cardNumber) && Int32.TryParse(cardNumber, out int number))
                     {
+                        Message = "Идет поиск...";
 
-                        using (var httpClient = new HttpClient())
+                        var response = await BonusCardModelService.GetBonusCardByCardNumber(number);
+
+                        if (response.ResponseCode == HttpStatusCode.OK)
                         {
-                            Message = "Идет поиск...";
-
-                            var request = "https://localhost:44389/api/BonusCard/ByCardNumber/" + number;
-                            using (var response = await httpClient.GetAsync(request))
-                            {
-                                if (response.StatusCode == HttpStatusCode.OK)
-                                {
-                                    string apiResponse = await response.Content.ReadAsStringAsync();
-
-                                    var bonusCard = JsonConvert.DeserializeObject<BonusCardModel>(apiResponse);
-
-                                    navigationViewModel.SelectedViewModel = new BonusCardViewModel(bonusCard);
-                                }
-                                else
-                                {
-                                    Message = "Карточка №" + number + " не найдена";
-                                }
-                            }
+                            navigationViewModel.SelectedViewModel = new BonusCardViewModel(response.BonusCard);
+                        }
+                        else
+                        {
+                            Message = "Карточка №" + number + " не найдена";
                         }
                     }
                     else
