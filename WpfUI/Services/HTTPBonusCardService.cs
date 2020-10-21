@@ -1,19 +1,15 @@
-﻿using Newtonsoft.Json;
+﻿using BonusCardManager.WpfUI.Models;
+using BonusCardManager.WpfUI.Services.Interfaces;
+using Newtonsoft.Json;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace BonusCardManager.WpfUI.Models
+namespace BonusCardManager.WpfUI.Services
 {
-    class BonusCardModelService
+    class HTTPBonusCardService : IBonusCardService
     {
-        public class BonusCardSearchResult
-        {
-            public HttpStatusCode ResponseCode { get; set; }
-            public BonusCardModel BonusCard { get; set; }
-        }
-
-        public static async Task<BonusCardSearchResult> GetBonusCardByCardNumber(int cardNumber)
+        public async Task<BonusCardModel> GetBonusCardByCardNumber(int cardNumber)
         {
             using (var httpClient = new HttpClient())
             {
@@ -26,19 +22,15 @@ namespace BonusCardManager.WpfUI.Models
 
                         var bonusCard = JsonConvert.DeserializeObject<BonusCardModel>(apiResponse);
 
-                        return new BonusCardSearchResult
-                        {
-                            ResponseCode = response.StatusCode,
-                            BonusCard = bonusCard
-                        };
+                        return bonusCard;
                     }
 
-                    return new BonusCardSearchResult { ResponseCode = response.StatusCode };
+                    return null;
                 }
             }
         }
 
-        public static async Task<BonusCardSearchResult> GetBonusCardByPhoneNumber(string phoneNumber)
+        public async Task<BonusCardModel> GetBonusCardByPhoneNumber(string phoneNumber)
         {
             using (var httpClient = new HttpClient())
             {
@@ -51,19 +43,15 @@ namespace BonusCardManager.WpfUI.Models
 
                         var bonusCard = JsonConvert.DeserializeObject<BonusCardModel>(apiResponse);
 
-                        return new BonusCardSearchResult
-                        {
-                            ResponseCode = response.StatusCode,
-                            BonusCard = bonusCard
-                        };
+                        return bonusCard;
                     }
 
-                    return new BonusCardSearchResult { ResponseCode = response.StatusCode };
+                    return null;
                 }
             }
         }
 
-        public static async Task<HttpStatusCode> AccrualBalanceAsync(int cardId, decimal amount)
+        public async Task<bool> AccrualBalanceAsync(int cardId, decimal amount)
         {
             using (var httpClient = new HttpClient())
             {
@@ -71,12 +59,12 @@ namespace BonusCardManager.WpfUI.Models
 
                 using (var response = await httpClient.PutAsync(request, null))
                 {
-                    return response.StatusCode;
+                    return response.StatusCode == HttpStatusCode.OK;
                 }
             }
         }
 
-        public static async Task<HttpStatusCode> WriteOffBalanceAsync(int cardId, decimal amount)
+        public async Task<bool> WriteOffBalanceAsync(int cardId, decimal amount)
         {
             using (var httpClient = new HttpClient())
             {
@@ -84,7 +72,7 @@ namespace BonusCardManager.WpfUI.Models
 
                 using (var response = await httpClient.PutAsync(request, null))
                 {
-                    return response.StatusCode;
+                    return response.StatusCode == HttpStatusCode.OK;
                 }
             }
         }

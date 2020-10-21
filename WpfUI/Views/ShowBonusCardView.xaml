@@ -8,7 +8,7 @@
              Background="White"
              >
     <Grid>
-        <Border BorderThickness="1" BorderBrush="Black" Height="200" Margin="10,10,10,10" VerticalAlignment="Top" Width="350">
+        <Border BorderThickness="1" CornerRadius="12" BorderBrush="Black" Height="200" Margin="10,10,10,10" VerticalAlignment="Top" Width="350">
             <Grid>
                 <TextBox IsReadOnly="True" FontSize="22px" Height="40" Margin="10,10,0,0" Text="{Binding Path=Number, StringFormat=№{0}, Mode=OneWay}" TextAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Top" Width="103" HorizontalAlignment="Left"/>
                 <TextBox IsReadOnly="True" FontSize="22px" Height="40" Margin="118,10,10,0" Text="{Binding Path=ExpirationUTCDate, StringFormat=До {0}, Mode=OneWay}" TextAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Top"/>

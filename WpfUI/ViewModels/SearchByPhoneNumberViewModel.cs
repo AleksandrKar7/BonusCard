@@ -1,5 +1,7 @@
 ﻿using BonusCardManager.WpfUI.Commands;
 using BonusCardManager.WpfUI.Models;
+using BonusCardManager.WpfUI.Services;
+using BonusCardManager.WpfUI.Services.Interfaces;
 using System;
 using System.Linq;
 using System.Net;
@@ -24,10 +26,12 @@ namespace BonusCardManager.WpfUI.ViewModels
         }
 
         private readonly NavigationViewModel navigationViewModel;
+        private IBonusCardService bonusCardService;
 
         public SearchByPhoneNumberViewModel(NavigationViewModel navigationViewModel)
         {
             this.navigationViewModel = navigationViewModel;
+            bonusCardService = new HTTPBonusCardService();
         }
 
         public ICommand SearchByPhoneNumber
@@ -40,10 +44,10 @@ namespace BonusCardManager.WpfUI.ViewModels
                     {
                         Message = "Идет поиск...";
 
-                        var response = await BonusCardModelService.GetBonusCardByPhoneNumber(phoneNumber);
-                        if (response.ResponseCode == HttpStatusCode.OK)
+                        var bonusCard = await bonusCardService.GetBonusCardByPhoneNumber(phoneNumber);
+                        if (bonusCard != null)
                         {
-                            navigationViewModel.SelectedViewModel = new BonusCardViewModel(response.BonusCard);
+                            navigationViewModel.SelectedViewModel = new BonusCardViewModel(bonusCard);
                         }
                         else
                         {

@@ -1,5 +1,7 @@
 ﻿using BonusCardManager.WpfUI.Commands;
 using BonusCardManager.WpfUI.Models;
+using BonusCardManager.WpfUI.Services;
+using BonusCardManager.WpfUI.Services.Interfaces;
 using System;
 using System.Net;
 using System.Windows.Input;
@@ -9,10 +11,12 @@ namespace BonusCardManager.WpfUI.ViewModels
     class BonusCardViewModel : BaseViewModel
     {
         private BonusCardModel bonusCard;
+        private IBonusCardService bonusCardService;
 
         public BonusCardViewModel(BonusCardModel bonusCard)
         {
             this.bonusCard = bonusCard;
+            bonusCardService = new HTTPBonusCardService();
         }
 
         public string ExpirationUTCDate
@@ -73,14 +77,14 @@ namespace BonusCardManager.WpfUI.ViewModels
                     if (!String.IsNullOrWhiteSpace(balanceChanges) && Decimal.TryParse(balanceChanges, out decimal amount))
                     {
                         Message = "Запрос в обработке...";
-                        var responseCode = await BonusCardModelService.AccrualBalanceAsync(bonusCard.Id, amount);
-                        if (responseCode == HttpStatusCode.OK)
+                        var isOk = await bonusCardService.AccrualBalanceAsync(bonusCard.Id, amount);
+                        if (isOk)
                         {
                             Message = "Готово. Обновление данных...";
-                            var result = await BonusCardModelService.GetBonusCardByCardNumber(bonusCard.Number);
-                            if(result.ResponseCode == HttpStatusCode.OK)
+                            var updatedBonusCard = await bonusCardService.GetBonusCardByCardNumber(bonusCard.Number);
+                            if(updatedBonusCard != null)
                             {
-                                bonusCard = result.BonusCard;
+                                bonusCard = updatedBonusCard;
                                 RefreshViewProperties();
                                 Message = "Готово";
                             }
@@ -118,14 +122,14 @@ namespace BonusCardManager.WpfUI.ViewModels
                         }
                         Message = "Запрос в обработке...";
 
-                        var responseCode = await BonusCardModelService.WriteOffBalanceAsync(bonusCard.Id, amount);
-                        if (responseCode == HttpStatusCode.OK)
+                        var isOk = await bonusCardService.WriteOffBalanceAsync(bonusCard.Id, amount);
+                        if (isOk)
                         {
                             Message = "Готово. Обновление данных...";
-                            var result = await BonusCardModelService.GetBonusCardByCardNumber(bonusCard.Number);
-                            if (result.ResponseCode == HttpStatusCode.OK)
+                            var updatedBonusCard = await bonusCardService.GetBonusCardByCardNumber(bonusCard.Number);
+                            if (updatedBonusCard != null)
                             {
-                                bonusCard = result.BonusCard;
+                                bonusCard = updatedBonusCard;
                                 RefreshViewProperties();
                                 Message = "Готово";
                             }
