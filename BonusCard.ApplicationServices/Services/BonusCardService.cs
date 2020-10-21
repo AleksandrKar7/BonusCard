@@ -24,7 +24,7 @@ namespace BonusCardManager.ApplicationServices.Services
             mapper = new MapperService();
         }
 
-        public void CreateBonusCard(BonusCardDto bonusCardDto)
+        public BonusCardDto CreateBonusCard(BonusCardDto bonusCardDto)
         {
             var errors = validator.Validate(bonusCardDto);
             if (!String.IsNullOrWhiteSpace(errors))
@@ -52,6 +52,8 @@ namespace BonusCardManager.ApplicationServices.Services
 
             unitOfWork.BonusCards.Create(bonusCard);
             unitOfWork.Save();
+
+            return mapper.Map<BonusCard, BonusCardDto>(bonusCard);
         }
 
         public BonusCardDto GetBonusCard(int cardNumber)

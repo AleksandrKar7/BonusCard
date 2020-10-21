@@ -93,9 +93,9 @@ namespace BonusCardManager.WebAPI.Controllers
 
             try
             {
-                bonusCardService.CreateBonusCard(bonusCard);
+                var newBonusCard = bonusCardService.CreateBonusCard(bonusCard);
 
-                return CreatedAtAction(nameof(GetByPhoneNumber), new { customePhone = bonusCard.CustomerPhoneNumber}, bonusCard);
+                return CreatedAtAction(nameof(GetByCardNumber), new { cardNumber = newBonusCard.Number}, newBonusCard);
             }
             catch (ArgumentException e)
             {

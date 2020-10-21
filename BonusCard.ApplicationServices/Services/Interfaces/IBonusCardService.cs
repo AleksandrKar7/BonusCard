@@ -7,8 +7,8 @@ namespace BonusCardManager.ApplicationServices.Services.Interfaces
     {
         BonusCardDto GetBonusCard(string customerPhoneNumber);
         BonusCardDto GetBonusCard(int cardNumber);
-        
-        void CreateBonusCard(BonusCardDto bonusCard);
+
+        BonusCardDto CreateBonusCard(BonusCardDto bonusCard);
 
         void WriteOffBalance(int cardId, decimal amount);
         void AccrualBalance(int cardId, decimal amount);
