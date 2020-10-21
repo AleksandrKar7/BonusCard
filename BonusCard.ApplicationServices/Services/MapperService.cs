@@ -17,6 +17,7 @@ namespace BonusCardManager.ApplicationServices.Services
             var config = new MapperConfiguration(cfg =>
             {
                 cfg.AddProfile<BonusCardMapperProfile>();
+                cfg.AddProfile<CustomerMapperProfile>();
             });
 
             return config.CreateMapper();

@@ -1,5 +1,6 @@
 ﻿using BonusCardManager.DataAccess.Entities;
 using BonusCardManager.DataAccess.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using System.Linq;
 
 namespace BonusCardManager.DataAccess.Repositories
@@ -29,7 +30,8 @@ namespace BonusCardManager.DataAccess.Repositories
 
         public Customer Get(int id)
         {
-            return dataContext.Customers.Find(id);
+            return dataContext.Customers.Include(b => b.BonusCard)
+                                        .FirstOrDefault(c => c.Id == id);
         }
 
         public IQueryable<Customer> GetAll()
