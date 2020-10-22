@@ -13,7 +13,7 @@
         <DatePicker Width="275" Loaded="calendarLoaded" FontSize="24px" SelectedDate="{Binding Path=ExpirationDate}" Height="40" Margin="165,50,5,0" VerticalAlignment="Top"/>
 
         <TextBlock TextAlignment="Center" FontSize="22px" Height="40" Margin="4,100,279,0" Text="Поиск клиента"  TextWrapping="Wrap" VerticalAlignment="Top"/>
-        <TextBox MaxLength="6" FontSize="22px" Margin="165,100,5,0" Text="{Binding Path=CustomerSearch}" TextAlignment="Left" TextWrapping="NoWrap" VerticalAlignment="Top" Width="275" RenderTransformOrigin="0.5,0.5" Height="40"/>
+        <TextBox FontSize="22px" Margin="165,100,5,0" Text="{Binding Path=CustomerSearch}" TextAlignment="Left" TextWrapping="NoWrap" VerticalAlignment="Top" Width="275" RenderTransformOrigin="0.5,0.5" Height="40"/>
 
         <TextBlock TextAlignment="Center" FontSize="22px" Height="40" Margin="10,160,273,0" Text="Клиент"  TextWrapping="Wrap" VerticalAlignment="Top"/>
         <ComboBox FontSize="24px" ItemsSource="{Binding SortedCustomers}" SelectedItem="{Binding SelectedCustomer}" MinHeight="50" Height="Auto" Margin="165,140,5,0" VerticalAlignment="Top" Width="275">

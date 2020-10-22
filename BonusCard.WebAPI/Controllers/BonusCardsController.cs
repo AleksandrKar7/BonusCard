@@ -9,7 +9,7 @@ namespace BonusCardManager.WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class BonusCardController : ControllerBase
+    public class BonusCardsController : ControllerBase
     {
         #region Private members
 
@@ -18,12 +18,12 @@ namespace BonusCardManager.WebAPI.Controllers
 
         #endregion
 
-        public BonusCardController(IBonusCardService bonusCardService)
+        public BonusCardsController(IBonusCardService bonusCardService)
         {
             this.bonusCardService = bonusCardService;
         }
 
-        // GET: api/BonusCard/ByCardNumber/{cardNumber}
+        // GET: api/BonusCards/ByCardNumber/{cardNumber}
         [HttpGet("ByCardNumber/{cardNumber}")]
         public IActionResult GetByCardNumber(int cardNumber)
         {
@@ -54,7 +54,7 @@ namespace BonusCardManager.WebAPI.Controllers
             }
         }
 
-        // GET: api/BonusCard/ByPhoneNumber/{customePhone}
+        // GET: api/BonusCards/ByPhoneNumber/{customePhone}
         [HttpGet("ByPhoneNumber/{customePhone}")]
         public IActionResult GetByPhoneNumber(string customePhone)
         {
@@ -85,7 +85,7 @@ namespace BonusCardManager.WebAPI.Controllers
             }
         }
 
-        // POST: api/BonusCard
+        // POST: api/BonusCards
         [HttpPost]
         public IActionResult Create([FromBody] BonusCardDto bonusCard)
         {
@@ -111,7 +111,7 @@ namespace BonusCardManager.WebAPI.Controllers
             }
         }
 
-        // PUT: api/BonusCard/{id}/Accrual/{amount}
+        // PUT: api/BonusCards/{id}/Accrual
         [HttpPut("{id}/Accrual")]
         public IActionResult AccrualBalance(int id, [FromBody] decimal amount)
         {
@@ -137,7 +137,7 @@ namespace BonusCardManager.WebAPI.Controllers
             }
         }
 
-        // PUT: api/BonusCard/{id}/WriteOff
+        // PUT: api/BonusCards/{id}/WriteOff
         [HttpPut("{id}/WriteOff")]
         public IActionResult WriteOffBalance(int id, [FromBody] decimal amount)
         {

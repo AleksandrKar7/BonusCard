@@ -1,4 +1,5 @@
-﻿using BonusCardManager.WpfUI.Models;
+﻿using BonusCardManager.WpfUI.Enpoints;
+using BonusCardManager.WpfUI.Models;
 using BonusCardManager.WpfUI.Services.Interfaces;
 using Newtonsoft.Json;
 using System.Collections.Generic;
@@ -14,7 +15,7 @@ namespace BonusCardManager.WpfUI.Services
         {
             using (var httpClient = new HttpClient())
             {
-                var request = "https://localhost:44389/api/Customers/NonCard";
+                var request = WebEnpoints.customersURI + "/NonCard";
                 using (var response = await httpClient.GetAsync(request))
                 {
                     if (response.StatusCode == HttpStatusCode.OK)

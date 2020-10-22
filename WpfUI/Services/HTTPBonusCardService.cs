@@ -1,4 +1,5 @@
-﻿using BonusCardManager.WpfUI.Models;
+﻿using BonusCardManager.WpfUI.Enpoints;
+using BonusCardManager.WpfUI.Models;
 using BonusCardManager.WpfUI.Services.Interfaces;
 using Newtonsoft.Json;
 using System.Net;
@@ -14,7 +15,7 @@ namespace BonusCardManager.WpfUI.Services
         {
             using (var httpClient = new HttpClient())
             {
-                var request = "https://localhost:44389/api/BonusCard/ByCardNumber/" + cardNumber;
+                var request = WebEnpoints.bonusCardsURI + "/ByCardNumber/" + cardNumber;
                 using (var response = await httpClient.GetAsync(request))
                 {
                     if (response.StatusCode == HttpStatusCode.OK)
@@ -35,7 +36,7 @@ namespace BonusCardManager.WpfUI.Services
         {
             using (var httpClient = new HttpClient())
             {
-                var request = "https://localhost:44389/api/BonusCard/ByPhoneNumber/" + phoneNumber;
+                var request = WebEnpoints.bonusCardsURI + "/ByPhoneNumber/" + phoneNumber;
                 using (var response = await httpClient.GetAsync(request))
                 {
                     if (response.StatusCode == HttpStatusCode.OK)
@@ -56,7 +57,7 @@ namespace BonusCardManager.WpfUI.Services
         {
             using (var httpClient = new HttpClient())
             {
-                var request = "https://localhost:44389/api/BonusCard/" + cardId + "/Accrual";
+                var request = WebEnpoints.bonusCardsURI + "/" + cardId + "/Accrual";
 
                 var body = JsonConvert.SerializeObject(amount);
                 using (var response = await httpClient.PutAsync(request, new StringContent(body, Encoding.UTF8, "application/json")))
@@ -70,7 +71,7 @@ namespace BonusCardManager.WpfUI.Services
         {
             using (var httpClient = new HttpClient())
             {
-                var request = "https://localhost:44389/api/BonusCard/" + cardId + "/WriteOff";
+                var request = WebEnpoints.bonusCardsURI + "/" + cardId + "/WriteOff";
 
                 var body = JsonConvert.SerializeObject(amount);
                 using (var response = await httpClient.PutAsync(request, new StringContent(body, Encoding.UTF8, "application/json")))
@@ -84,7 +85,7 @@ namespace BonusCardManager.WpfUI.Services
         {
             using (var httpClient = new HttpClient())
             {
-                var request = "https://localhost:44389/api/BonusCard";
+                var request = WebEnpoints.bonusCardsURI;
                 var body = JsonConvert.SerializeObject(bonusCard);
                 using (var response = await httpClient.PostAsync(request, new StringContent(body, Encoding.UTF8, "application/json")))
                 {
