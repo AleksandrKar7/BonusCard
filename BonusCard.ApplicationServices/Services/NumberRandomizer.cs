@@ -24,7 +24,6 @@ namespace BonusCardManager.ApplicationServices.Services
 
             if(freeNumbers.Count() == 0)
             {
-                //Not really sure about the correct type of exception
                 throw new ArgumentException("No free numbers in this range");
             }
 

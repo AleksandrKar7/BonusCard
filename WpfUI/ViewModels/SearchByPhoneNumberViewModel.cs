@@ -1,6 +1,8 @@
 ﻿using BonusCardManager.WpfUI.Commands;
 using BonusCardManager.WpfUI.Services;
 using BonusCardManager.WpfUI.Services.Interfaces;
+using BonusCardManager.WpfUI.Validation;
+using BonusCardManager.WpfUI.Validation.Interfaces;
 using System;
 using System.Linq;
 using System.Windows.Input;
@@ -24,12 +26,13 @@ namespace BonusCardManager.WpfUI.ViewModels
         }
 
         private readonly NavigationViewModel navigationViewModel;
-        private IBonusCardService bonusCardService;
-
+        private readonly IBonusCardService bonusCardService;
+        private readonly IValidator<string> phoneNumberValidator;
         public SearchByPhoneNumberViewModel(NavigationViewModel navigationViewModel)
         {
             this.navigationViewModel = navigationViewModel;
             bonusCardService = new HTTPBonusCardService();
+            phoneNumberValidator = new PhoneNumberValidator();
         }
 
         public ICommand SearchByPhoneNumber
@@ -38,9 +41,9 @@ namespace BonusCardManager.WpfUI.ViewModels
             {
                 return new DelegateCommand(async (obj) =>
                 {
-                    if (String.IsNullOrWhiteSpace(phoneNumber) || !phoneNumber.All(char.IsDigit))
+                    if (!phoneNumberValidator.IsValid(phoneNumber))
                     {
-                        Message = "Доступны только числа";
+                        Message = "Формат: 38 xxx xxx xx xx";
                         return;
                     }
 
