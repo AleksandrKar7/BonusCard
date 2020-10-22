@@ -16,10 +16,12 @@ namespace BonusCardManager.WpfUI.Views
         {
             bool approvedDecimalPoint = false;
 
-            if (e.Text == ".")
+            if (e.Text == "." || e.Text == ",")
             {
-                if (!((TextBox)sender).Text.Contains("."))
+                if (!((TextBox)sender).Text.Contains(".") && !((TextBox)sender).Text.Contains(","))
+                {
                     approvedDecimalPoint = true;
+                }
             }
 
             if (!(char.IsDigit(e.Text, e.Text.Length - 1) || approvedDecimalPoint))

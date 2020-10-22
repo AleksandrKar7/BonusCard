@@ -56,9 +56,10 @@ namespace BonusCardManager.WpfUI.Services
         {
             using (var httpClient = new HttpClient())
             {
-                var request = "https://localhost:44389/api/BonusCard/" + cardId + "/Accrual/" + amount;
+                var request = "https://localhost:44389/api/BonusCard/" + cardId + "/Accrual";
 
-                using (var response = await httpClient.PutAsync(request, null))
+                var body = JsonConvert.SerializeObject(amount);
+                using (var response = await httpClient.PutAsync(request, new StringContent(body, Encoding.UTF8, "application/json")))
                 {
                     return response.StatusCode == HttpStatusCode.OK;
                 }
@@ -69,9 +70,10 @@ namespace BonusCardManager.WpfUI.Services
         {
             using (var httpClient = new HttpClient())
             {
-                var request = "https://localhost:44389/api/BonusCard/" + cardId + "/WriteOff/" + amount;
+                var request = "https://localhost:44389/api/BonusCard/" + cardId + "/WriteOff";
 
-                using (var response = await httpClient.PutAsync(request, null))
+                var body = JsonConvert.SerializeObject(amount);
+                using (var response = await httpClient.PutAsync(request, new StringContent(body, Encoding.UTF8, "application/json")))
                 {
                     return response.StatusCode == HttpStatusCode.OK;
                 }

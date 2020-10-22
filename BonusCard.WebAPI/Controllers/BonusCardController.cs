@@ -112,8 +112,8 @@ namespace BonusCardManager.WebAPI.Controllers
         }
 
         // PUT: api/BonusCard/{id}/Accrual/{amount}
-        [HttpPut("{id}/Accrual/{amount}")]
-        public IActionResult AccrualBalance(int id, decimal amount)
+        [HttpPut("{id}/Accrual")]
+        public IActionResult AccrualBalance(int id, [FromBody] decimal amount)
         {
             logger.Info(nameof(AccrualBalance));
 
@@ -137,9 +137,9 @@ namespace BonusCardManager.WebAPI.Controllers
             }
         }
 
-        // PUT: api/BonusCard/{id}/WriteOff/{amount}
-        [HttpPut("{id}/WriteOff/{amount}")]
-        public IActionResult WriteOffBalance(int id, decimal amount)
+        // PUT: api/BonusCard/{id}/WriteOff
+        [HttpPut("{id}/WriteOff")]
+        public IActionResult WriteOffBalance(int id, [FromBody] decimal amount)
         {
             logger.Info(nameof(WriteOffBalance));
 

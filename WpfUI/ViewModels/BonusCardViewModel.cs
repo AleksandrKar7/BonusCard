@@ -3,6 +3,7 @@ using BonusCardManager.WpfUI.Models;
 using BonusCardManager.WpfUI.Services;
 using BonusCardManager.WpfUI.Services.Interfaces;
 using System;
+using System.Globalization;
 using System.Net;
 using System.Windows.Input;
 
@@ -73,34 +74,40 @@ namespace BonusCardManager.WpfUI.ViewModels
             {
                 return new DelegateCommand(async (obj) =>
                 {
+                    var separator = new NumberFormatInfo { CurrencyDecimalSeparator = "," };
+                    if (String.IsNullOrWhiteSpace(balanceChanges) 
+                        || !Decimal.TryParse(balanceChanges.Replace(".", ","), NumberStyles.Currency, separator, out decimal amount))
+                    {
+                        Message = "Доступны только числа";
+                        return;
+                    }
 
-                    if (!String.IsNullOrWhiteSpace(balanceChanges) && Decimal.TryParse(balanceChanges, out decimal amount))
+                    try
                     {
                         Message = "Запрос в обработке...";
                         var isOk = await bonusCardService.AccrualBalanceAsync(bonusCard.Id, amount);
-                        if (isOk)
+                        if (!isOk)
                         {
-                            Message = "Готово. Обновление данных...";
-                            var updatedBonusCard = await bonusCardService.GetBonusCardByCardNumber(bonusCard.Number);
-                            if(updatedBonusCard != null)
-                            {
-                                bonusCard = updatedBonusCard;
-                                RefreshViewProperties();
-                                Message = "Готово";
-                            }
-                            else
-                            {
-                                Message = "Ну удалось обновить данные";
-                            }
+                            Message = "Баланс карты не изменен";
+                            return;
+                        }
+
+                        Message = "Обновление данных...";
+                        var updatedBonusCard = await bonusCardService.GetBonusCardByCardNumber(bonusCard.Number);
+                        if (updatedBonusCard != null)
+                        {
+                            bonusCard = updatedBonusCard;
+                            RefreshViewProperties();
+                            Message = "Готово";
                         }
                         else
                         {
-                            Message = "Баланс карточки №" + Number + " не изменен";
+                            Message = "Не удалось обновить данные";
                         }
                     }
-                    else
+                    catch
                     {
-                        Message = "Доступны только числа";
+                        Message = "Ошибка при обращению к серверу";
                     }
                 });
             }
@@ -112,40 +119,46 @@ namespace BonusCardManager.WpfUI.ViewModels
             {
                 return new DelegateCommand(async (obj) =>
                 {
-
-                    if (!String.IsNullOrWhiteSpace(balanceChanges) && Decimal.TryParse(balanceChanges, out decimal amount))
+                    var separator = new NumberFormatInfo { CurrencyDecimalSeparator = "," };
+                    if (String.IsNullOrWhiteSpace(balanceChanges) 
+                        || !Decimal.TryParse(balanceChanges.Replace(".", ","), NumberStyles.Currency, separator, out decimal amount))
                     {
-                        if(Balance - amount < 0)
+                        Message = "Доступны только числа";
+                        return;
+                    }
+                    if (Balance - amount < 0)
+                    {
+                        Message = "Сумма на карте не достаточна";
+                        return;
+                    }
+
+                    try
+                    {
+                        Message = "Запрос в обработке...";
+                        var isOk = await bonusCardService.WriteOffBalanceAsync(bonusCard.Id, amount);
+                        if (!isOk)
                         {
-                            Message = "Сумма на карточке не достаточна";
+                            Message = "Баланс карты не изменен";
                             return;
                         }
-                        Message = "Запрос в обработке...";
 
-                        var isOk = await bonusCardService.WriteOffBalanceAsync(bonusCard.Id, amount);
-                        if (isOk)
+                        Message = "Обновление данных...";
+                        var updatedBonusCard = await bonusCardService.GetBonusCardByCardNumber(bonusCard.Number);
+                        if (updatedBonusCard != null)
                         {
-                            Message = "Готово. Обновление данных...";
-                            var updatedBonusCard = await bonusCardService.GetBonusCardByCardNumber(bonusCard.Number);
-                            if (updatedBonusCard != null)
-                            {
-                                bonusCard = updatedBonusCard;
-                                RefreshViewProperties();
-                                Message = "Готово";
-                            }
-                            else
-                            {
-                                Message = "Ну удалось обновить данные";
-                            }
+                            bonusCard = updatedBonusCard;
+                            RefreshViewProperties();
+                            Message = "Готово";
                         }
                         else
                         {
-                            Message = "Баланс карточки №" + Number + " не изменен";
+                            Message = "Ну удалось обновить данные";
                         }
+
                     }
-                    else
+                    catch
                     {
-                        Message = "Доступны только числа";
+                        Message = "Ошибка при обращению к серверу";
                     }
                 });
             }
