@@ -1,10 +1,8 @@
 ﻿using BonusCardManager.WpfUI.Commands;
-using BonusCardManager.WpfUI.Models;
 using BonusCardManager.WpfUI.Services;
 using BonusCardManager.WpfUI.Services.Interfaces;
 using System;
 using System.Linq;
-using System.Net;
 using System.Windows.Input;
 
 namespace BonusCardManager.WpfUI.ViewModels
@@ -40,10 +38,15 @@ namespace BonusCardManager.WpfUI.ViewModels
             {
                 return new DelegateCommand(async (obj) =>
                 {
-                    if (!String.IsNullOrWhiteSpace(phoneNumber) && phoneNumber.All(char.IsDigit))
+                    if (String.IsNullOrWhiteSpace(phoneNumber) || !phoneNumber.All(char.IsDigit))
+                    {
+                        Message = "Доступны только числа";
+                        return;
+                    }
+
+                    try
                     {
                         Message = "Идет поиск...";
-
                         var bonusCard = await bonusCardService.GetBonusCardByPhoneNumber(phoneNumber);
                         if (bonusCard != null)
                         {
@@ -51,12 +54,12 @@ namespace BonusCardManager.WpfUI.ViewModels
                         }
                         else
                         {
-                            Message = "Карточка по номеру телефона " + phoneNumber + " не найдена";
+                            Message = "Карточка не найдена";
                         }
                     }
-                    else
+                    catch
                     {
-                        Message = "Доступны только числа";
+                        Message = "Ошибка при обращению к серверу";
                     }
                 });
             }

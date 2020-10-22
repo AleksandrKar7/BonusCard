@@ -1,9 +1,7 @@
 ﻿using BonusCardManager.WpfUI.Commands;
-using BonusCardManager.WpfUI.Models;
 using BonusCardManager.WpfUI.Services;
 using BonusCardManager.WpfUI.Services.Interfaces;
 using System;
-using System.Net;
 using System.Windows.Input;
 
 namespace BonusCardManager.WpfUI.ViewModels
@@ -39,24 +37,28 @@ namespace BonusCardManager.WpfUI.ViewModels
             {
                 return new DelegateCommand(async (obj) =>
                 {
-                    if (!String.IsNullOrWhiteSpace(cardNumber) && Int32.TryParse(cardNumber, out int number))
+                    if (String.IsNullOrWhiteSpace(cardNumber) | !Int32.TryParse(cardNumber, out int number))
+                    {
+                        Message = "Доступны только числа";
+                        return;
+                    }
+
+                    try
                     {
                         Message = "Идет поиск...";
-
                         var bonusCard = await bonusCardService.GetBonusCardByCardNumber(number);
-
                         if (bonusCard != null)
                         {
                             navigationViewModel.SelectedViewModel = new BonusCardViewModel(bonusCard);
                         }
                         else
                         {
-                            Message = "Карточка №" + number + " не найдена";
+                            Message = "Карточка не найдена";
                         }
                     }
-                    else
+                    catch
                     {
-                        Message = "Доступны только числа";
+                        Message = "Ошибка при обращению к серверу";
                     }
                 });
             }

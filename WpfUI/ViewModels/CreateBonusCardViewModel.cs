@@ -82,7 +82,6 @@ namespace BonusCardManager.WpfUI.ViewModels
             {
                 return new DelegateCommand(async (obj) =>
                 {
-
                     Message = null;
                     if (expirationDate == null || expirationDate.Date < DateTime.Now.Date)
                     {
@@ -103,16 +102,24 @@ namespace BonusCardManager.WpfUI.ViewModels
                         CustomerPhoneNumber = selectedCustomer.PhoneNumber
                     };
 
-                    var newBonusCard = await bonusCardService.CreateBonusCard(bonusCard);
-                    if(newBonusCard != null)
+                    try
                     {
-                        navigationViewModel.SelectedViewModel = new BonusCardViewModel(newBonusCard);
-                    }
-                    else
+                        Message = "Идет создание карты";
+                        var newBonusCard = await bonusCardService.CreateBonusCard(bonusCard);
+                        if (newBonusCard != null)
+                        {
+                            navigationViewModel.SelectedViewModel = new BonusCardViewModel(newBonusCard);
+                        }
+                        else
+                        {
+                            Message = "Ошибка. Карта не была создана";
+                        }
+                    } 
+                    catch
                     {
-                        Message = "Ошибка. Карта не была создана";
+                        Message = "Ошибка при обращению к серверу";
                     }
-                });
+                }); 
             }
         }
     }
