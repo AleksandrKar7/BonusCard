@@ -29,6 +29,10 @@ namespace BonusCardManager.DataAccess
                 .HasIndex(u => u.Number)
                 .IsUnique();
 
+            modelBuilder.Entity<Customer>()
+                .HasIndex(u => u.PhoneNumber)
+                .IsUnique();
+
             base.OnModelCreating(modelBuilder);
         }
     }
