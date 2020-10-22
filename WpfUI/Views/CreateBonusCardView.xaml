@@ -27,7 +27,7 @@
                 </DataTemplate>
             </ComboBox.ItemTemplate>
         </ComboBox>
-        <TextBlock Height="25" Margin="9,225,10,0" Text="{Binding Message}" TextAlignment="Center" FontSize="18px" Foreground="Red" TextWrapping="Wrap" VerticalAlignment="Top" Width="426"/>
+        <TextBlock Height="25" Margin="9,225,10,0" Text="{Binding Message}" TextAlignment="Center" FontSize="18px" TextWrapping="Wrap" VerticalAlignment="Top" Width="426"/>
         <Button Content="Создать" FontSize="25px" Height="40px" Margin="165,255,148,0" VerticalAlignment="Top" Command="{Binding CreateBonusCard}" RenderTransformOrigin="0.631,0.595" Width="132"/>
     </Grid>
 </UserControl>

@@ -5,8 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:BonusCardManager.WpfUI.Views"
              mc:Ignorable="d" 
-             Background="White"
-             >
+             Background="White">
     <Grid>
         <Border BorderThickness="1" CornerRadius="12" BorderBrush="Black" Height="200" Margin="10,10,10,10" VerticalAlignment="Top" Width="350">
             <Grid>
@@ -18,13 +17,10 @@
             </Grid>
         </Border>
 
-
         <TextBlock FontSize="25px" Height="40" Margin="32,215,22,0" Text="Управления балансом " TextAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Top" Width="Auto"/>
         <TextBox MaxLength="13" PreviewTextInput="NumberValidationTextBox" Margin="10,279,10,0" Text="{Binding BalanceChanges}" FontSize="40px" TextAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Top" Width="350" RenderTransformOrigin="0.5,0.5" Height="60"/>
         <Button Content="Начислить" Width="130" FontSize="25px" Height="40"  Background="Green" Foreground="White" Margin="230,344,10,0" VerticalAlignment="Top" Command="{Binding AccrualBonusCardBalance}"/>
         <Button Content="Списать" Width="130" FontSize="25px" Height="40" Background="#CC0000" Foreground="White" Margin="10,344,230,0" VerticalAlignment="Top" Command="{Binding WriteOffBonusCardBalance}"/>
         <TextBlock Height="25" Margin="10,249,10,0" Text="{Binding Message}" TextAlignment="Center" FontSize="18px" TextWrapping="Wrap" VerticalAlignment="Top" Width="350"/>
-
-
     </Grid>
 </UserControl>

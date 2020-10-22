@@ -3,8 +3,6 @@ using BonusCardManager.WpfUI.Services;
 using BonusCardManager.WpfUI.Services.Interfaces;
 using BonusCardManager.WpfUI.Validation;
 using BonusCardManager.WpfUI.Validation.Interfaces;
-using System;
-using System.Linq;
 using System.Windows.Input;
 
 namespace BonusCardManager.WpfUI.ViewModels
@@ -57,12 +55,12 @@ namespace BonusCardManager.WpfUI.ViewModels
                         }
                         else
                         {
-                            Message = "Карточка не найдена";
+                            Message = "Карта не найдена";
                         }
                     }
                     catch
                     {
-                        Message = "Ошибка при обращению к серверу";
+                        Message = "Ошибка при обращении к серверу";
                     }
                 });
             }

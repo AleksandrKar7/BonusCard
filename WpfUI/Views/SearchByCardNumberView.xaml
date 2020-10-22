@@ -6,11 +6,10 @@
         xmlns:local="clr-namespace:BonusCardManager.WpfUI.Views" xmlns:viewmodels="clr-namespace:BonusCardManager.WpfUI.ViewModels"
         mc:Ignorable="d"
         Background="White">
-
     <Grid>
         <TextBlock HorizontalAlignment="Center" FontSize="25px" Height="40" Margin="0,10,0,0" Text="Поиск карты по номеру карты" TextAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Top" Width="Auto"/>
         <TextBox HorizontalAlignment="Center" MaxLength="6" PreviewTextInput="NumberValidationTextBox" Margin="0,80,0,0" Text="{Binding Path=CardNumber}" FontSize="40px" TextAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Top" Width="300" RenderTransformOrigin="0.5,0.5" Height="60"/>
         <Button Content="Поиск" Width="120px" FontSize="25px" Height="40px" HorizontalAlignment="Center" Margin="0,145,0,0" VerticalAlignment="Top" Command="{Binding SearchByCardNumber}"/>
-        <TextBlock HorizontalAlignment="Center" Height="25" Margin="0,50,0,0" Text="{Binding Path=Message}" TextAlignment="Center" FontSize="18px" Foreground="Red" TextWrapping="Wrap" VerticalAlignment="Top" Width="300"/>
+        <TextBlock HorizontalAlignment="Center" Height="25" Margin="0,50,0,0" Text="{Binding Path=Message}" TextAlignment="Center" FontSize="18px" TextWrapping="Wrap" VerticalAlignment="Top" Width="300"/>
     </Grid>
 </UserControl>

@@ -4,7 +4,6 @@ using BonusCardManager.WpfUI.Services;
 using BonusCardManager.WpfUI.Services.Interfaces;
 using System;
 using System.Globalization;
-using System.Net;
 using System.Windows.Input;
 
 namespace BonusCardManager.WpfUI.ViewModels
@@ -78,7 +77,7 @@ namespace BonusCardManager.WpfUI.ViewModels
                     if (String.IsNullOrWhiteSpace(balanceChanges) 
                         || !Decimal.TryParse(balanceChanges.Replace(".", ","), NumberStyles.Currency, separator, out decimal amount))
                     {
-                        Message = "Доступны только числа";
+                        Message = "Неверный формат числа";
                         return;
                     }
 
@@ -107,7 +106,7 @@ namespace BonusCardManager.WpfUI.ViewModels
                     }
                     catch
                     {
-                        Message = "Ошибка при обращению к серверу";
+                        Message = "Ошибка при обращении к серверу";
                     }
                 });
             }
@@ -123,7 +122,7 @@ namespace BonusCardManager.WpfUI.ViewModels
                     if (String.IsNullOrWhiteSpace(balanceChanges) 
                         || !Decimal.TryParse(balanceChanges.Replace(".", ","), NumberStyles.Currency, separator, out decimal amount))
                     {
-                        Message = "Доступны только числа";
+                        Message = "Неверный формат числа";
                         return;
                     }
                     if (Balance - amount < 0)
@@ -154,11 +153,10 @@ namespace BonusCardManager.WpfUI.ViewModels
                         {
                             Message = "Ну удалось обновить данные";
                         }
-
                     }
                     catch
                     {
-                        Message = "Ошибка при обращению к серверу";
+                        Message = "Ошибка при обращении к серверу";
                     }
                 });
             }

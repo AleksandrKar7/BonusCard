@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
+﻿
 namespace BonusCardManager.WpfUI.Enpoints
 {
     public static class WebEnpoints

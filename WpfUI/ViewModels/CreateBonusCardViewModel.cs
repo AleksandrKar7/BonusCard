@@ -79,7 +79,7 @@ namespace BonusCardManager.WpfUI.ViewModels
 
         public async void InitCustomers()
         {
-            Message = "Загрузка списка клиентов";
+            Message = "Загрузка списка клиентов...";
             try
             {
                 var nonCardCustomers = await customerService.GetNonCardCustomers();
@@ -95,7 +95,7 @@ namespace BonusCardManager.WpfUI.ViewModels
             }
             catch
             {
-                Message = "Ошибка при обращению к серверу";
+                Message = "Ошибка при обращении к серверу";
             }
            
         }
@@ -133,7 +133,7 @@ namespace BonusCardManager.WpfUI.ViewModels
 
                     try
                     {
-                        Message = "Идет создание карты";
+                        Message = "Идет создание карты...";
                         var newBonusCard = await bonusCardService.CreateBonusCard(bonusCard);
                         if (newBonusCard != null)
                         {
@@ -146,7 +146,7 @@ namespace BonusCardManager.WpfUI.ViewModels
                     } 
                     catch
                     {
-                        Message = "Ошибка при обращению к серверу";
+                        Message = "Ошибка при обращении к серверу";
                     }
                 }); 
             }

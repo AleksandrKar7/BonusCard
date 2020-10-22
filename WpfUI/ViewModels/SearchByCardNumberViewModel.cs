@@ -39,7 +39,7 @@ namespace BonusCardManager.WpfUI.ViewModels
                 {
                     if (String.IsNullOrWhiteSpace(cardNumber) | !Int32.TryParse(cardNumber, out int number))
                     {
-                        Message = "Доступны только числа";
+                        Message = "Доступны только цифры";
                         return;
                     }
 
@@ -53,12 +53,12 @@ namespace BonusCardManager.WpfUI.ViewModels
                         }
                         else
                         {
-                            Message = "Карточка не найдена";
+                            Message = "Карта не найдена";
                         }
                     }
                     catch
                     {
-                        Message = "Ошибка при обращению к серверу";
+                        Message = "Ошибка при обращении к серверу";
                     }
                 });
             }
