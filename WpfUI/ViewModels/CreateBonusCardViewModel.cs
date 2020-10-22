@@ -3,7 +3,9 @@ using BonusCardManager.WpfUI.Models;
 using BonusCardManager.WpfUI.Services;
 using BonusCardManager.WpfUI.Services.Interfaces;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Windows.Input;
 
 namespace BonusCardManager.WpfUI.ViewModels
@@ -39,14 +41,27 @@ namespace BonusCardManager.WpfUI.ViewModels
             set { message = value; OnPropertyChanged(nameof(Message)); }
         }
 
-        private ObservableCollection<CustomerModel> customers;
-        public ObservableCollection<CustomerModel> Customers 
+        private string customerSearch;
+        public string CustomerSearch
+        {
+            get { return customerSearch; }
+            set 
+            { 
+                customerSearch = value; 
+                OnPropertyChanged(nameof(CustomerSearch));
+                SortedCustomers = new ObservableCollection<CustomerModel>(SearchCustomers(customers, customerSearch));
+            }
+        }
+
+        private IEnumerable<CustomerModel> customers;
+        private ObservableCollection<CustomerModel> sortedCustomers;
+        public ObservableCollection<CustomerModel> SortedCustomers 
         { 
-            get { return customers; }
+            get { return sortedCustomers; }
             set
             {
-                customers = value;
-                OnPropertyChanged(nameof(Customers));
+                sortedCustomers = value;
+                OnPropertyChanged(nameof(SortedCustomers));
             }
         }
 
@@ -65,15 +80,29 @@ namespace BonusCardManager.WpfUI.ViewModels
         public async void InitCustomers()
         {
             Message = "Загрузка списка клиентов";
-            var nonCardCustomers = await customerService.GetNonCardCustomers();
-            if(nonCardCustomers == null)
+            try
             {
-                Message = "Клиенты без карты не найдены";
-                return;
-            }
+                var nonCardCustomers = await customerService.GetNonCardCustomers();
+                if (nonCardCustomers == null)
+                {
+                    Message = "Клиенты без карты не найдены";
+                    return;
+                }
 
-            Customers = new ObservableCollection<CustomerModel>(nonCardCustomers);
-            Message = null;
+                customers = nonCardCustomers;
+                SortedCustomers = new ObservableCollection<CustomerModel>(nonCardCustomers);
+                Message = null;
+            }
+            catch
+            {
+                Message = "Ошибка при обращению к серверу";
+            }
+           
+        }
+
+        public IEnumerable<CustomerModel> SearchCustomers(IEnumerable<CustomerModel> customers, string searchValue)
+        {
+            return customers.Where(c => (c.FullName.Contains(searchValue) || c.PhoneNumber.StartsWith(searchValue)));
         }
 
         public ICommand CreateBonusCard

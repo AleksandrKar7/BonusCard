@@ -12,18 +12,22 @@
         <TextBlock TextAlignment="Center" FontSize="22px" Height="40" Margin="10,55,285,0" Text="Срок действия"  TextWrapping="Wrap" VerticalAlignment="Top"/>
         <DatePicker Width="275" Loaded="calendarLoaded" FontSize="24px" SelectedDate="{Binding Path=ExpirationDate}" Height="40" Margin="165,50,5,0" VerticalAlignment="Top"/>
 
-        <TextBlock TextAlignment="Center" FontSize="22px" Height="40" Margin="10,120,273,0" Text="Клиент"  TextWrapping="Wrap" VerticalAlignment="Top"/>
-        <ComboBox ItemsSource="{Binding Customers}" SelectedItem="{Binding SelectedCustomer}" Height="80" Margin="165,100,5,0" VerticalAlignment="Top" Width="275">
+        <TextBlock TextAlignment="Center" FontSize="22px" Height="40" Margin="4,100,279,0" Text="Поиск клиента"  TextWrapping="Wrap" VerticalAlignment="Top"/>
+        <TextBox MaxLength="6" FontSize="22px" Margin="165,100,5,0" Text="{Binding Path=CustomerSearch}" TextAlignment="Left" TextWrapping="NoWrap" VerticalAlignment="Top" Width="275" RenderTransformOrigin="0.5,0.5" Height="40"/>
+
+        <TextBlock TextAlignment="Center" FontSize="22px" Height="40" Margin="10,160,273,0" Text="Клиент"  TextWrapping="Wrap" VerticalAlignment="Top"/>
+        <ComboBox FontSize="24px" ItemsSource="{Binding SortedCustomers}" SelectedItem="{Binding SelectedCustomer}" MinHeight="50" Height="Auto" Margin="165,140,5,0" VerticalAlignment="Top" Width="275">
+
             <ComboBox.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Margin="5">
-                        <TextBlock Width="275" TextWrapping="Wrap" FontSize="16px" Height="45" Text="{Binding Path=FullName}" />
+                        <TextBlock Width="275" TextWrapping="Wrap" FontSize="16px" Height="Auto" Text="{Binding Path=FullName}" />
                         <TextBlock Width="275" FontSize="16px" Text="{Binding Path=PhoneNumber}" />
                     </StackPanel>
                 </DataTemplate>
             </ComboBox.ItemTemplate>
         </ComboBox>
-        <TextBlock Height="25" Margin="10,185,9,0" Text="{Binding Message}" TextAlignment="Center" FontSize="18px" Foreground="Red" TextWrapping="Wrap" VerticalAlignment="Top" Width="426"/>
-        <Button Content="Создать" FontSize="25px" Height="40px" Margin="165,215,148,0" VerticalAlignment="Top" Command="{Binding CreateBonusCard}" RenderTransformOrigin="0.631,0.595" Width="132"/>
+        <TextBlock Height="25" Margin="9,225,10,0" Text="{Binding Message}" TextAlignment="Center" FontSize="18px" Foreground="Red" TextWrapping="Wrap" VerticalAlignment="Top" Width="426"/>
+        <Button Content="Создать" FontSize="25px" Height="40px" Margin="165,255,148,0" VerticalAlignment="Top" Command="{Binding CreateBonusCard}" RenderTransformOrigin="0.631,0.595" Width="132"/>
     </Grid>
 </UserControl>
