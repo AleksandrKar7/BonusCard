@@ -6,6 +6,7 @@ using BonusCardManager.DataAccess.Entities;
 using BonusCardManager.DataAccess.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Diagnostics;
 using System.Linq;
 
 namespace BonusCardManager.ApplicationServices.Services
@@ -44,16 +45,33 @@ namespace BonusCardManager.ApplicationServices.Services
                 throw new ArgumentException("Customer already has a card");
             }
 
-            bonusCard.Number = NumberRandomizer.GetUniqueNumber(
-                unitOfWork.BonusCards.GetAll()
-                                     .Select(x => x.Number)
-                                     .AsEnumerable()
-            );
+            bonusCard.Number = GetUniqueNumber();
 
             unitOfWork.BonusCards.Create(bonusCard);
             unitOfWork.Save();
 
             return mapper.Map<BonusCard, BonusCardDto>(bonusCard);
+        }
+
+        private int GetUniqueNumber(int clasterSize = 1000)
+        {
+            var incompleteClusters = unitOfWork.BonusCards.GetAll()
+                                                          .GroupBy(x => x.Number / clasterSize)
+                                                          .Where(c => c.Count() < clasterSize)
+                                                          .Select(k => k.Key)
+                                                          .ToList();
+
+            var clasterNumber = incompleteClusters[new Random().Next(0, incompleteClusters.Count)];
+
+            var minNumber = clasterNumber * clasterSize;
+            var maxNumber = (clasterNumber + 1) * clasterSize;
+
+            var usedNumbers = unitOfWork.BonusCards.GetAll()
+                                                   .Select(x => x.Number)
+                                                   .Where(x => (minNumber < x && x < maxNumber))
+                                                   .ToList();
+
+            return NumberRandomizer.GetUniqueNumber(usedNumbers, maxNumber, minNumber);
         }
 
         public BonusCardDto GetBonusCard(int cardNumber)

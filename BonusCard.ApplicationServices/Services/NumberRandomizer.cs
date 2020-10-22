@@ -8,7 +8,7 @@ namespace BonusCardManager.ApplicationServices.Services
     {
         private const int MaxNumber = 999999;
 
-        public static int GetUniqueNumber(IEnumerable<int> usedNumbers, int maxNumber = MaxNumber)
+        public static int GetUniqueNumber(IEnumerable<int> usedNumbers, int maxNumber = MaxNumber, int minNumber = 1)
         {
             if(usedNumbers == null)
             {
@@ -19,7 +19,7 @@ namespace BonusCardManager.ApplicationServices.Services
                 throw new ArgumentException("maxNumber cannot be less than zero");
             }
 
-            var allPossibleNumbers = Enumerable.Range(1, maxNumber);
+            var allPossibleNumbers = Enumerable.Range(minNumber, maxNumber);
             var freeNumbers = allPossibleNumbers.Except(usedNumbers).ToList();
 
             if(freeNumbers.Count() == 0)
