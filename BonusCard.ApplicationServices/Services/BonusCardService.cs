@@ -53,25 +53,28 @@ namespace BonusCardManager.ApplicationServices.Services
             return mapper.Map<BonusCard, BonusCardDto>(bonusCard);
         }
 
-        private int GetUniqueNumber(int clasterSize = 1000)
+        private int GetUniqueNumber(int clusterSize = 1000, int maxNumber = 999999)
         {
-            var incompleteClusters = unitOfWork.BonusCards.GetAll()
-                                                          .GroupBy(x => x.Number / clasterSize)
-                                                          .Where(c => c.Count() < clasterSize)
-                                                          .Select(k => k.Key)
-                                                          .ToList();
+            var allClusters = Enumerable.Range(0, maxNumber / clusterSize);
 
-            var clasterNumber = incompleteClusters[new Random().Next(0, incompleteClusters.Count)];
+            var fullClusters = unitOfWork.BonusCards.GetAll()
+                                                    .GroupBy(x => x.Number / clusterSize)
+                                                    .Where(c => c.Count() == clusterSize)
+                                                    .Select(k => k.Key);
 
-            var minNumber = clasterNumber * clasterSize;
-            var maxNumber = (clasterNumber + 1) * clasterSize;
+            var incompleteClusters = allClusters.Except(fullClusters).ToArray();
+
+            var clusterNumber = incompleteClusters[new Random().Next(0, incompleteClusters.Length)];
+
+            var lowerNumberLimit = clusterNumber * clusterSize;
+            var upperNumberLimit = (clusterNumber + 1) * clusterSize;
 
             var usedNumbers = unitOfWork.BonusCards.GetAll()
                                                    .Select(x => x.Number)
-                                                   .Where(x => (minNumber < x && x < maxNumber))
+                                                   .Where(x => (lowerNumberLimit < x && x < upperNumberLimit))
                                                    .ToList();
 
-            return NumberRandomizer.GetUniqueNumber(usedNumbers, maxNumber, minNumber);
+            return NumberRandomizer.GetUniqueNumber(usedNumbers, upperNumberLimit, lowerNumberLimit);
         }
 
         public BonusCardDto GetBonusCard(int cardNumber)
